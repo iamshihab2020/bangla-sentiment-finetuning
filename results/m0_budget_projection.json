@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-19T14:48:30+00:00",
+    "git_commit": "5b101c75df8b1d4b67c2a35397699b389e78f70a",
+    "command": "scripts/m0_budget_projection.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "assumptions": {
+    "padding": "every example padded to the benchmark sequence length (worst case)",
+    "llm": {
+      "batch": 16,
+      "min_steps": 150,
+      "max_epochs": 3
+    },
+    "encoder": {
+      "batch": 32,
+      "min_steps": 150,
+      "max_epochs": 5
+    },
+    "eval_examples_per_run": 6400,
+    "d1_full": 12582,
+    "d2_full": 8260,
+    "llm_speed_source": "results/m0_env_check.json (md-nishat-008/TigerLLM-1B-it)",
+    "encoder_speed_source": "results/m0_encoder_check.json (csebuetnlp/banglabert)"
+  },
+  "measured_examples_per_s": {
+    "llm": {
+      "train": 4.32,
+      "eval": 24.64
+    },
+    "encoder": {
+      "train": 108.3,
+      "eval": 447.8
+    }
+  },
+  "rows": [
+    {
+      "experiment": "M3 pilot: 3 candidates at 1k",
+      "kind": "llm",
+      "priority": "core",
+      "runs": 3,
+      "train_examples": 9000,
+      "gpu_hours": 0.8
+    },
+    {
+      "experiment": "E3 learning-rate grid",
+      "kind": "llm",
+      "priority": "core",
+      "runs": 3,
+      "train_examples": 9000,
+      "gpu_hours": 0.8
+    },
+    {
+      "experiment": "E3 learning curve",
+      "kind": "llm",
+      "priority": "core",
+      "runs": 18,
+      "train_examples": 190638,
+      "gpu_hours": 13.6
+    },
+    {
+      "experiment": "E4a LoRA on bf16 base",
+      "kind": "llm",
+      "priority": "core",
+      "runs": 6,
+      "train_examples": 122238,
+      "gpu_hours": 8.3
+    },
+    {
+      "experiment": "E4b classification head",
+      "kind": "llm",
+      "priority": "core",
+      "runs": 9,
+      "train_examples": 129438,
+      "gpu_hours": 9.0
+    },
+    {
+      "experiment": "E5 TigerLLM",
+      "kind": "llm",
+      "priority": "secondary",
+      "runs": 9,
+      "train_examples": 138438,
+      "gpu_hours": 9.6
+    },
+    {
+      "experiment": "E6 QLoRA on bengali_sa",
+      "kind": "llm",
+      "priority": "secondary",
+      "runs": 9,
+      "train_examples": 90540,
+      "gpu_hours": 6.5
+    },
+    {
+      "experiment": "E4c ranks 8 and 32",
+      "kind": "llm",
+      "priority": "low",
+      "runs": 6,
+      "train_examples": 226476,
+      "gpu_hours": 15.0
+    },
+    {
+      "experiment": "E4d attention-only modules",
+      "kind": "llm",
+      "priority": "low",
+      "runs": 3,
+      "train_examples": 113238,
+      "gpu_hours": 7.5
+    },
+    {
+      "experiment": "E5 Gemma control (only if Gemma is not the main LLM)",
+      "kind": "llm",
+      "priority": "conditional",
+      "runs": 9,
+      "train_examples": 138438,
+      "gpu_hours": 9.6
+    },
+    {
+      "experiment": "E1 learning-rate grid",
+      "kind": "encoder",
+      "priority": "core",
+      "runs": 3,
+      "train_examples": 15000,
+      "gpu_hours": 0.1
+    },
+    {
+      "experiment": "E1 learning curve",
+      "kind": "encoder",
+      "priority": "core",
+      "runs": 18,
+      "train_examples": 322530,
+      "gpu_hours": 0.9
+    },
+    {
+      "experiment": "E6 BanglaBERT on bengali_sa",
+      "kind": "encoder",
+      "priority": "secondary",
+      "runs": 9,
+      "train_examples": 153300,
+      "gpu_hours": 0.4
+    }
+  ],
+  "totals": {
+    "core": {
+      "runs": 60,
+      "gpu_hours": 33.5
+    },
+    "secondary": {
+      "runs": 27,
+      "gpu_hours": 16.5
+    },
+    "low": {
+      "runs": 9,
+      "gpu_hours": 22.5
+    },
+    "conditional": {
+      "runs": 9,
+      "gpu_hours": 9.6
+    },
+    "all": {
+      "runs": 105,
+      "gpu_hours": 82.1
+    }
+  }
+}

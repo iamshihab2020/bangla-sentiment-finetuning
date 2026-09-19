@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-19T14:41:38+00:00",
+    "git_commit": "b0b5bfbd91dd92a7122399c284391954c03345c9",
+    "command": "scripts/m0_encoder_check.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "model": "csebuetnlp/banglabert",
+  "seq_len": 128,
+  "load_s": 49.0,
+  "params": 110619651,
+  "train_benchmark": {
+    "batch_size": 32,
+    "s_per_step": 0.296,
+    "examples_per_s": 108.3,
+    "peak_vram_gb": 3.234
+  },
+  "infer_benchmark": [
+    {
+      "batch_size": 1,
+      "examples_per_s": 35.9,
+      "ms_per_example": 27.864,
+      "peak_vram_gb": 0.656
+    },
+    {
+      "batch_size": 32,
+      "examples_per_s": 429.7,
+      "ms_per_example": 2.327,
+      "peak_vram_gb": 0.748
+    },
+    {
+      "batch_size": 128,
+      "examples_per_s": 447.8,
+      "ms_per_example": 2.233,
+      "peak_vram_gb": 1.031
+    }
+  ]
+}

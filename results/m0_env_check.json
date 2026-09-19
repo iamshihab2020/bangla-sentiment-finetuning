@@ -1,16 +1,21 @@
 {
+  "meta": {
+    "timestamp_utc": "2026-09-19T14:48:05+00:00",
+    "git_commit": "5b101c75df8b1d4b67c2a35397699b389e78f70a",
+    "command": "scripts/m0_env_check.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
   "model": "md-nishat-008/TigerLLM-1B-it",
-  "python": "3.12.10",
-  "platform": "Windows-11-10.0.26200-SP0",
-  "utf8_mode": 1,
-  "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
-  "torch": "2.14.0+cu130",
-  "cuda_runtime": "13.0",
-  "transformers": "5.17.0",
-  "peft": "0.21.0",
-  "bitsandbytes": "0.50.2",
-  "download_s": 182.6,
-  "load_s": 16.3,
+  "seq_len": 128,
+  "download_s": 0.6,
+  "load_s": 13.8,
   "vram_after_4bit_load_gb": 0.965,
   "sample_tokens_per_word": 1.58,
   "sample_generation": "এই মন্তব্যটি বিশ্লেষণ করতে আমরা ধাপে ধাপে কাজ করব:\n\n1.",
@@ -19,22 +24,35 @@
   "train_benchmark": [
     {
       "batch_size": 4,
-      "seq_len": 128,
-      "s_per_step": 1.141,
-      "tokens_per_s": 449,
-      "peak_vram_gb": 3.324
+      "s_per_step": 0.926,
+      "tokens_per_s": 553,
+      "examples_per_s": 4.32,
+      "peak_vram_gb": 3.323
     },
     {
       "batch_size": 8,
-      "seq_len": 128,
-      "s_per_step": 5.562,
-      "tokens_per_s": 184,
+      "s_per_step": 3.921,
+      "tokens_per_s": 261,
+      "examples_per_s": 2.04,
       "peak_vram_gb": 4.997
     },
     {
       "batch_size": 16,
-      "seq_len": 128,
       "result": "out of memory"
+    }
+  ],
+  "infer_benchmark": [
+    {
+      "batch_size": 16,
+      "examples_per_s": 22.99,
+      "ms_per_example": 43.49,
+      "peak_vram_gb": 2.022
+    },
+    {
+      "batch_size": 32,
+      "examples_per_s": 24.64,
+      "ms_per_example": 40.58,
+      "peak_vram_gb": 2.385
     }
   ]
 }
