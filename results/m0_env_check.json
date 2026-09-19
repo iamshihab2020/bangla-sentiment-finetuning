@@ -1,0 +1,40 @@
+{
+  "model": "md-nishat-008/TigerLLM-1B-it",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "utf8_mode": 1,
+  "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+  "torch": "2.14.0+cu130",
+  "cuda_runtime": "13.0",
+  "transformers": "5.17.0",
+  "peft": "0.21.0",
+  "bitsandbytes": "0.50.2",
+  "download_s": 182.6,
+  "load_s": 16.3,
+  "vram_after_4bit_load_gb": 0.965,
+  "sample_tokens_per_word": 1.58,
+  "sample_generation": "এই মন্তব্যটি বিশ্লেষণ করতে আমরা ধাপে ধাপে কাজ করব:\n\n1.",
+  "lora_trainable_params": 13045760,
+  "lora_trainable_pct": 1.288,
+  "train_benchmark": [
+    {
+      "batch_size": 4,
+      "seq_len": 128,
+      "s_per_step": 1.141,
+      "tokens_per_s": 449,
+      "peak_vram_gb": 3.324
+    },
+    {
+      "batch_size": 8,
+      "seq_len": 128,
+      "s_per_step": 5.562,
+      "tokens_per_s": 184,
+      "peak_vram_gb": 4.997
+    },
+    {
+      "batch_size": 16,
+      "seq_len": 128,
+      "result": "out of memory"
+    }
+  ]
+}
