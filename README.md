@@ -2,7 +2,7 @@
 
 How much labeled data does a small general-purpose LLM fine-tuned with QLoRA need to match a Bangla-native encoder (BanglaBERT) on noisy Bangla sentiment classification, and what does it cost on a 6 GB laptop GPU?
 
-**Status:** M0 (environment) in progress. There are no experimental results yet. Every number that appears here later will come from a results file produced by an actual run.
+**Status:** M0 (environment) in progress. There are no experimental results yet. Every number that appears here later will come from a results file produced by an actual run. See [progress.md](progress.md) for the running log.
 
 ## Research questions
 
