@@ -39,12 +39,16 @@ def set_seed(seed):
 
 
 def git_commit():
-    """Current commit hash, with a '-dirty' suffix if there are uncommitted changes."""
+    """Current commit hash, with a '-dirty' suffix if there are uncommitted changes.
+
+    Changes under results/ do not count, because runs write their outputs there.
+    """
     try:
         run = lambda *args: subprocess.run(
             ["git", *args], cwd=ROOT, capture_output=True, text=True, check=True
         ).stdout.strip()
-        return run("rev-parse", "HEAD") + ("-dirty" if run("status", "--porcelain") else "")
+        dirty = run("status", "--porcelain", "--", ".", ":(exclude)results")
+        return run("rev-parse", "HEAD") + ("-dirty" if dirty else "")
     except (subprocess.CalledProcessError, FileNotFoundError):
         return None
 
