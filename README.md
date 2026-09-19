@@ -2,7 +2,7 @@
 
 How much labeled data does a small general-purpose LLM fine-tuned with QLoRA need to match a Bangla-native encoder (BanglaBERT) on noisy Bangla sentiment classification, and what does it cost on a 6 GB laptop GPU?
 
-**Status:** M0 (environment) in progress. There are no experimental results yet. Every number that appears here later will come from a results file produced by an actual run. See [progress.md](progress.md) for the running log.
+**Status:** M0 (environment) done, M1 (data) nearly done; see [reports/data_card.md](reports/data_card.md). There are no experimental results yet. Every number that appears here later will come from a results file produced by an actual run. See [progress.md](progress.md) for the running log.
 
 ## Research questions
 
@@ -39,6 +39,29 @@ uv run python scripts/m0_env_check.py   # GPU, 4-bit loading and QLoRA speed che
 
 Gated models (Gemma, Llama) need a free Hugging Face account, a Read token (`uv run hf auth login`) and an accepted license on each model page.
 
+## Compute budget (M0 projection)
+
+This is a worst-case estimate, produced by `scripts/m0_budget_projection.py` from speeds measured on the laptop (`results/m0_env_check.json`, `results/m0_encoder_check.json`). It assumes every example is padded to 128 tokens and every run trains for its maximum number of epochs. It will be refined at M1 with real text lengths.
+
+| Priority | Runs | GPU-hours |
+|---|---|---|
+| Core | 60 | 33.5 |
+| Secondary | 27 | 16.5 |
+| Low (cut first) | 9 | 22.5 |
+| Conditional (Gemma control, only if Gemma is not the main LLM) | 9 | 9.6 |
+| **All** | **105** | **82.1** |
+
+Measured speeds behind these numbers:
+
+| Model | Training | Inference |
+|---|---|---|
+| QLoRA, TigerLLM-1B in 4-bit (batch 4, 128 tokens) | 4.32 examples/s, 3.3 GB peak VRAM | 24.6 examples/s |
+| BanglaBERT (batch 32, 128 tokens) | 108.3 examples/s | 447.8 examples/s |
+
+Notes:
+- The LLM hours assume a 1B model. If the main LLM chosen at M3 is the larger Qwen3.5-2B, LLM hours will be higher.
+- Timings vary by up to about 25% between repeated runs on this laptop.
+
 ## Repository layout
 
 ```
@@ -62,7 +85,15 @@ Datasets are not included in this repository because of their licenses. Scripts 
 | [SentNoB](https://github.com/KhondokerIslam/SentNoB) (Islam et al., 2021) | Primary (3 classes, noisy social media comments) | CC BY-ND 4.0 (per the Hugging Face card) |
 | [bengali_sa](https://huggingface.co/datasets/DGurgurov/bengali_sa) (from Sazzed, 2020) | Replication (binary, YouTube drama reviews) | MIT on Hugging Face; the original repository states no license |
 
-Only row IDs, split checksums and predictions without text are committed.
+Only row IDs, split checksums and predictions without text are committed. To rebuild the data locally:
+
+```powershell
+uv run python scripts/m1_prepare_data.py     # download, normalize, remove leaked rows, build subsets
+uv run python scripts/m1_tokenizer_stats.py  # tokenizer cost per model
+uv run python scripts/m1_data_card.py        # reports/data_card.md
+```
+
+Train rows that near-duplicate a validation or test row are removed (SentNoB 902, bengali_sa 919). Validation and test are unchanged. Details are in the data card.
 
 ## Reproducibility
 
@@ -72,4 +103,4 @@ Only row IDs, split checksums and predictions without text are committed.
 
 ## License
 
-Code: MIT (see `LICENSE`). Datasets and models keep their own licenses: BanglaBERT is CC BY-NC-SA 4.0, Gemma models use the Gemma Terms of Use, Llama 3.2 uses the Llama 3.2 Community License, Qwen3 is Apache 2.0, and TigerLLM is listed as CC BY 4.0.
+Code: MIT (see `LICENSE`). Datasets and models keep their own licenses: BanglaBERT is CC BY-NC-SA 4.0, Gemma models use the Gemma Terms of Use, Llama 3.2 uses the Llama 3.2 Community License, Qwen3.5 is Apache 2.0, and TigerLLM is listed as CC BY 4.0.
