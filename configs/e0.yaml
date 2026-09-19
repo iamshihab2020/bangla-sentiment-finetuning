@@ -1,0 +1,13 @@
+# E0: sanity-floor baselines (PRD section 7). Fixed settings, nothing is tuned.
+# Training sizes and seeds come from bangla_sentiment.data (DATASETS[...].curve_sizes, SEEDS).
+experiment: E0
+dataset: sentnob
+models:
+  majority: {}
+  tfidf_lr:
+    word_ngrams: [1, 2]
+    char_ngrams: [2, 5]
+    char_analyzer: char_wb   # character n-grams inside word boundaries
+    sublinear_tf: true
+    C: 1.0
+    max_iter: 2000

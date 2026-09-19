@@ -9,8 +9,8 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 | # | Milestone | Planned weeks | Status |
 | --- | --- | --- | --- |
 | M0 | Environment and budget | W1 (Sep 21 to Sep 27) | Done (Sep 19) |
-| M1 | Data | W2 (Sep 28 to Oct 4) | Nearly done (Sep 19). Waiting on Shihab's 50-label manual check |
-| M2 | Baselines E0 and E1 | W3 (Oct 5 to Oct 11) | Not started |
+| M1 | Data | W2 (Sep 28 to Oct 4) | Done (Sep 19) |
+| M2 | Baselines E0 and E1 | W3 (Oct 5 to Oct 11) | In progress (Sep 19). E0 done, E1 next |
 | M3 | Pilot and E2 | W4 (Oct 12 to Oct 18) | Not started |
 | M4 | RQ1 learning curves | W5 to W6 (Oct 19 to Nov 1) | Not started |
 | M5 | Ablations | W7 (Nov 2 to Nov 8) | Not started |
@@ -28,6 +28,34 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 #### Next
 #### Waiting on
 -->
+
+### 2026-09-19 (M2 start, E0 baselines)
+
+#### Done
+
+- **Predictions frozen:** H1a to H3 kept exactly as written, recorded in the PRD decision log before the first M2 result.
+- **Label check script:** `scripts/m1_label_check.py` compares the 50 blind labels with the dataset (agreement, Cohen's kappa, confusion matrix). It was tested on a fake filled-in copy and is waiting for the real labels.
+- **Pushed:** all commits up to `bd005e6` are on GitHub (private repo).
+- **Shared metrics:** `src/bangla_sentiment/evaluate.py` computes macro-F1, micro-F1, accuracy, per-class scores and the confusion matrix, and saves predictions without text.
+- **E0 baselines:** `src/bangla_sentiment/baselines.py`, `configs/e0.yaml` and `scripts/m2_e0_baselines.py` cover 42 runs on the CPU (2 models, 6 sizes plus train_original, 3 seeds), in about a minute. Summary in `results/e0_summary.json`.
+- **Tests:** 16 passing (4 new: hand-checked metrics, Bangla word splitting, majority class).
+
+#### Findings
+
+- **sklearn's default word splitter breaks Bangla.** It treats vowel signs as separators, so "ভালো লাগলো খুব" becomes `['গল']`. E0 uses a Bangla-aware pattern, guarded by a test. A TF-IDF baseline built with the defaults would have been quietly wrong.
+- **E0 test macro-F1 (mean ± sd over 3 seeds, cleaned train):** majority 19.46 at every size; TF-IDF 43.49 ± 1.39 (250), 46.71 ± 0.82 (500), 52.10 ± 0.48 (1k), 56.20 ± 1.13 (2k), 59.31 ± 0.37 (4k), 62.03 ± 0.00 (full).
+- **Leakage effect on TF-IDF:** trained on train_original (leaks included), test macro-F1 is 67.87, against 62.03 on the cleaned train, a gap of 5.84 points (accuracy 72.32 vs 66.71). Part of the gap comes from the original split having 902 more rows, but the learning curve rises only about 2.7 points from 4k to 11.7k, so most of it is very likely the leaked duplicates. E1 will show whether BanglaBERT is affected the same way.
+- **The E0 gate in the PRD was wrong and has been corrected.** The SentNoB paper's 64.61 is not micro-F1: its precision (57.71) and recall (73.39) differ, which cannot happen with micro-averaging. The exact comparison is the paper's majority row: 41.24, which our majority baseline reproduces exactly (`results/e0_summary.json`), confirming the same test set and label mapping. Our TF-IDF per-class F1 on train_original is also close to the paper's Table 5.
+- **50-label manual check (closes M1):** Shihab's blind labels agree with the dataset on 27 of 50 (54%), Cohen's kappa 0.30 (`results/m1_label_check.json`). Most disagreements sit on the neutral boundary: 10 comments the dataset calls positive were labeled neutral (mostly polite questions, requests and praise followed by "but"). A read-through of the 23 disagreements suggests roughly a third look like dataset label errors, a third like misses by Shihab (mostly sarcasm and complaints stated as facts), and a third are genuinely ambiguous. This is a rough reading of 50 items, not a measurement. The labels were not changed after seeing the key.
+- **The 72.89 BanglaBERT reference is confirmed as macro-F1** (averaged over 3 seeds, learning rate from 2e-5 to 5e-5, 3 to 20 epochs). The PRD allows at most 5 epochs, which may matter for the E1 reproduction check.
+
+#### Next
+
+- E1: BanglaBERT reproduction on train_original (gate: within about 3 points of 72.89), then the learning-rate grid and all sizes and seeds on the cleaned train.
+
+#### Waiting on
+
+- Nothing. The corrected E0 gate was confirmed by Shihab, and the label check and E0 were committed, rerun from the clean commit and pushed.
 
 ### 2026-09-19 (M1, data)
 
@@ -59,7 +87,7 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 #### Waiting on
 
 - The 50-label manual check.
-- Pushing to GitHub. M1 is committed locally, and the M1 scripts were rerun after the commit, so both result files point to the clean commit `db101bc`. The rerun reproduced the same splits and counts.
+- Nothing else. M1 is committed and pushed, and the M1 scripts were rerun after the commit, so both result files point to the clean commit `db101bc`. The rerun reproduced the same splits and counts.
 
 ### 2026-09-19 (M0)
 
