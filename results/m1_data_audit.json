@@ -1,0 +1,354 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-19T15:41:17+00:00",
+    "git_commit": "db101bc5ef800b81e033bba1afcc1028447226f0",
+    "command": "scripts/m1_prepare_data.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "datasets": {
+    "sentnob": {
+      "source": {
+        "repo_id": "khondoker/SentNoB",
+        "revision": "7f9ab8ccd02457b79cd15d300fc1f0eece47b81b",
+        "file_sha256": {
+          "Train.csv": "2755f05aaa3198b7d7e00241974362a770a4467267048a3956b18ef95116377e",
+          "Val.csv": "0b19347a83d5c56a6cff70561291bbe902b743f4a76d8b02eb625cd6880bb3ca",
+          "Test.csv": "46f6f4c2812ea204d08f0c9e77b0b48a4a3a93aa7905e37f65e45ac259507ed6"
+        }
+      },
+      "license": "CC BY-ND 4.0 per the Hugging Face dataset card. The GitHub repo (KhondokerIslam/SentNoB) has no license file. No text, raw or processed, may be committed.",
+      "rows_raw": {
+        "train": 12575,
+        "val": 1567,
+        "test": 1586
+      },
+      "rows_final": {
+        "train": 11673,
+        "val": 1567,
+        "test": 1586
+      },
+      "class_counts": {
+        "train": {
+          "negative": 4144,
+          "neutral": 2731,
+          "positive": 4798
+        },
+        "val": {
+          "negative": 590,
+          "neutral": 354,
+          "positive": 623
+        },
+        "test": {
+          "negative": 571,
+          "neutral": 361,
+          "positive": 654
+        }
+      },
+      "label_mapping": {
+        "raw_to_name": {
+          "0": "neutral",
+          "1": "positive",
+          "2": "negative"
+        },
+        "published_counts": {
+          "positive": 6410,
+          "negative": 5709,
+          "neutral": 3609
+        },
+        "observed_counts": {
+          "negative": 5709,
+          "neutral": 3609,
+          "positive": 6410
+        },
+        "matches_published": true
+      },
+      "normalizer_changed_share": {
+        "train": 0.7234,
+        "val": 0.7377,
+        "test": 0.7364
+      },
+      "words_per_text": {
+        "train": {
+          "mean": 15.22,
+          "median": 12.0,
+          "p95": 36.0,
+          "p99": 47.0,
+          "max": 93
+        },
+        "val": {
+          "mean": 15.97,
+          "median": 13.0,
+          "p95": 37.0,
+          "p99": 47.0,
+          "max": 51
+        },
+        "test": {
+          "mean": 15.23,
+          "median": 12.0,
+          "p95": 35.8,
+          "p99": 44.2,
+          "max": 54
+        }
+      },
+      "chars_per_text": {
+        "train": {
+          "mean": 79.94,
+          "median": 64.0,
+          "p95": 191.0,
+          "p99": 245.0,
+          "max": 372
+        },
+        "val": {
+          "mean": 84.06,
+          "median": 67.0,
+          "p95": 197.0,
+          "p99": 248.0,
+          "max": 291
+        },
+        "test": {
+          "mean": 80.19,
+          "median": 66.0,
+          "p95": 183.8,
+          "p99": 235.5,
+          "max": 320
+        }
+      },
+      "duplicates": {
+        "exact": {
+          "extra_copies_within_split": {
+            "train": 1342,
+            "val": 10,
+            "test": 17
+          },
+          "cross_split": {
+            "train_rows_also_in_val": 365,
+            "train_rows_also_in_test": 371,
+            "val_rows_also_in_test": 54
+          },
+          "train_duplicate_groups_with_conflicting_labels": 118
+        },
+        "near": {
+          "extra_copies_within_split": {
+            "train": 1682,
+            "val": 18,
+            "test": 25
+          },
+          "cross_split": {
+            "train_rows_also_in_val": 462,
+            "train_rows_also_in_test": 448,
+            "val_rows_also_in_test": 70
+          },
+          "train_duplicate_groups_with_conflicting_labels": 150
+        },
+        "texts_without_letters": {
+          "train": 0,
+          "val": 0,
+          "test": 0
+        }
+      },
+      "dropped_from_train_for_leakage": 902,
+      "curve_sizes": [
+        250,
+        500,
+        1000,
+        2000,
+        4000,
+        11673
+      ],
+      "subset_class_counts_seed_0": {
+        "250": {
+          "negative": 89,
+          "neutral": 58,
+          "positive": 103
+        },
+        "500": {
+          "negative": 177,
+          "neutral": 117,
+          "positive": 206
+        },
+        "1000": {
+          "negative": 355,
+          "neutral": 234,
+          "positive": 411
+        },
+        "2000": {
+          "negative": 710,
+          "neutral": 468,
+          "positive": 822
+        },
+        "4000": {
+          "negative": 1420,
+          "neutral": 936,
+          "positive": 1644
+        },
+        "11673": {
+          "negative": 4144,
+          "neutral": 2731,
+          "positive": 4798
+        }
+      }
+    },
+    "bengali_sa": {
+      "source": {
+        "repo_id": "DGurgurov/bengali_sa",
+        "revision": "11d6e7ff3404e626640840b17af5f86fcec467b7",
+        "file_sha256": {
+          "train.csv": "50f5ce926dee91d1e8ed05bcb5c9b52d4427d43704f418666a55ccc712a2820b",
+          "dev.csv": "301837ac27d29e148919cf2a5d2cb0aaea62315de8df6116f2268ff942810767",
+          "test.csv": "9c0251179fffaabcaad87cd05a60cfcfdfc8880986f0240dd9148570aecef00a"
+        }
+      },
+      "license": "MIT per the Hugging Face card. The original repo (sazzadcsedu/BN-Dataset) states no license, so treat it as research use only.",
+      "rows_raw": {
+        "train": 8264,
+        "val": 1771,
+        "test": 1772
+      },
+      "rows_final": {
+        "train": 7345,
+        "val": 1771,
+        "test": 1772
+      },
+      "class_counts": {
+        "train": {
+          "negative": 2086,
+          "positive": 5259
+        },
+        "val": {
+          "negative": 501,
+          "positive": 1270
+        },
+        "test": {
+          "negative": 516,
+          "positive": 1256
+        }
+      },
+      "label_mapping": {
+        "raw_to_name": {
+          "0": "negative",
+          "1": "positive"
+        },
+        "published_counts": {
+          "positive": 8500,
+          "negative": 3307
+        },
+        "observed_counts": {
+          "negative": 3307,
+          "positive": 8500
+        },
+        "matches_published": true
+      },
+      "normalizer_changed_share": {
+        "train": 0.5453,
+        "val": 0.5014,
+        "test": 0.4921
+      },
+      "words_per_text": {
+        "train": {
+          "mean": 13.22,
+          "median": 9.0,
+          "p95": 38.0,
+          "p99": 76.6,
+          "max": 246
+        },
+        "val": {
+          "mean": 11.87,
+          "median": 8.0,
+          "p95": 36.0,
+          "p99": 65.3,
+          "max": 203
+        },
+        "test": {
+          "mean": 12.7,
+          "median": 8.0,
+          "p95": 41.0,
+          "p99": 74.6,
+          "max": 223
+        }
+      },
+      "chars_per_text": {
+        "train": {
+          "mean": 76.53,
+          "median": 50.0,
+          "p95": 220.8,
+          "p99": 433.6,
+          "max": 1474
+        },
+        "val": {
+          "mean": 68.89,
+          "median": 45.0,
+          "p95": 210.0,
+          "p99": 376.2,
+          "max": 1374
+        },
+        "test": {
+          "mean": 74.02,
+          "median": 46.0,
+          "p95": 243.0,
+          "p99": 444.0,
+          "max": 1357
+        }
+      },
+      "duplicates": {
+        "exact": {
+          "extra_copies_within_split": {
+            "train": 701,
+            "val": 94,
+            "test": 107
+          },
+          "cross_split": {
+            "train_rows_also_in_val": 615,
+            "train_rows_also_in_test": 579,
+            "val_rows_also_in_test": 123
+          },
+          "train_duplicate_groups_with_conflicting_labels": 1
+        },
+        "near": {
+          "extra_copies_within_split": {
+            "train": 921,
+            "val": 143,
+            "test": 147
+          },
+          "cross_split": {
+            "train_rows_also_in_val": 798,
+            "train_rows_also_in_test": 784,
+            "val_rows_also_in_test": 177
+          },
+          "train_duplicate_groups_with_conflicting_labels": 2
+        },
+        "texts_without_letters": {
+          "train": 0,
+          "val": 0,
+          "test": 0
+        }
+      },
+      "dropped_from_train_for_leakage": 919,
+      "curve_sizes": [
+        250,
+        1000,
+        7345
+      ],
+      "subset_class_counts_seed_0": {
+        "250": {
+          "negative": 71,
+          "positive": 179
+        },
+        "1000": {
+          "negative": 284,
+          "positive": 716
+        },
+        "7345": {
+          "negative": 2086,
+          "positive": 5259
+        }
+      }
+    }
+  }
+}

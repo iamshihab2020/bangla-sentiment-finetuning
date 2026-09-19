@@ -59,7 +59,7 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 #### Waiting on
 
 - The 50-label manual check.
-- The go-ahead to commit. After committing, rerun the M1 scripts so the results point to a clean commit.
+- Pushing to GitHub. M1 is committed locally, and the M1 scripts were rerun after the commit, so both result files point to the clean commit `db101bc`. The rerun reproduced the same splits and counts.
 
 ### 2026-09-19 (M0)
 
@@ -100,4 +100,4 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 
 #### Waiting on
 
-- Shihab's go-ahead to commit and push (see the M1 entry).
+- Nothing. Committed; pushing is tracked in the M1 entry.

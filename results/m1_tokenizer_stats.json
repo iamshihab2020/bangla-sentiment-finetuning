@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-19T15:41:55+00:00",
+    "git_commit": "db101bc5ef800b81e033bba1afcc1028447226f0",
+    "command": "scripts/m1_tokenizer_stats.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "split": "train",
+  "tokenizers": {
+    "banglabert": {
+      "repo_id": "csebuetnlp/banglabert",
+      "sentnob": {
+        "vocab_size": 32000,
+        "texts": 11673,
+        "tokens_per_word": 1.163,
+        "tokens_per_char": 0.221,
+        "tokens_per_text": {
+          "mean": 17.7,
+          "median": 14.0,
+          "p95": 42.0,
+          "p99": 53.0,
+          "max": 102
+        },
+        "share_over_64_tokens": 0.0008,
+        "share_over_128_tokens": 0.0,
+        "unk_rate": 0.00041,
+        "byte_fallback_rate": 0.0
+      },
+      "bengali_sa": {
+        "vocab_size": 32000,
+        "texts": 7345,
+        "tokens_per_word": 1.398,
+        "tokens_per_char": 0.242,
+        "tokens_per_text": {
+          "mean": 18.5,
+          "median": 12.0,
+          "p95": 52.0,
+          "p99": 103.6,
+          "max": 339
+        },
+        "share_over_64_tokens": 0.0305,
+        "share_over_128_tokens": 0.006,
+        "unk_rate": 0.00073,
+        "byte_fallback_rate": 0.0
+      }
+    },
+    "llama-3.2-1b": {
+      "repo_id": "meta-llama/Llama-3.2-1B-Instruct",
+      "sentnob": {
+        "vocab_size": 128256,
+        "texts": 11673,
+        "tokens_per_word": 6.235,
+        "tokens_per_char": 1.187,
+        "tokens_per_text": {
+          "mean": 94.9,
+          "median": 76.0,
+          "p95": 226.0,
+          "p99": 289.0,
+          "max": 464
+        },
+        "share_over_64_tokens": 0.5959,
+        "share_over_128_tokens": 0.2256,
+        "unk_rate": null,
+        "byte_fallback_rate": 0.0
+      },
+      "bengali_sa": {
+        "vocab_size": 128256,
+        "texts": 7345,
+        "tokens_per_word": 6.876,
+        "tokens_per_char": 1.188,
+        "tokens_per_text": {
+          "mean": 90.9,
+          "median": 60.0,
+          "p95": 263.8,
+          "p99": 507.1,
+          "max": 1768
+        },
+        "share_over_64_tokens": 0.4651,
+        "share_over_128_tokens": 0.1907,
+        "unk_rate": null,
+        "byte_fallback_rate": 0.0
+      }
+    },
+    "gemma-3-1b": {
+      "repo_id": "google/gemma-3-1b-it",
+      "sentnob": {
+        "vocab_size": 262145,
+        "texts": 11673,
+        "tokens_per_word": 1.429,
+        "tokens_per_char": 0.272,
+        "tokens_per_text": {
+          "mean": 21.8,
+          "median": 18.0,
+          "p95": 50.0,
+          "p99": 65.0,
+          "max": 148
+        },
+        "share_over_64_tokens": 0.0114,
+        "share_over_128_tokens": 0.0001,
+        "unk_rate": 0.0,
+        "byte_fallback_rate": 5e-05
+      },
+      "bengali_sa": {
+        "vocab_size": 262145,
+        "texts": 7345,
+        "tokens_per_word": 1.584,
+        "tokens_per_char": 0.274,
+        "tokens_per_text": {
+          "mean": 20.9,
+          "median": 14.0,
+          "p95": 59.0,
+          "p99": 113.0,
+          "max": 404
+        },
+        "share_over_64_tokens": 0.04,
+        "share_over_128_tokens": 0.0079,
+        "unk_rate": 0.0,
+        "byte_fallback_rate": 4e-05
+      }
+    },
+    "qwen3.5-2b": {
+      "repo_id": "Qwen/Qwen3.5-2B",
+      "sentnob": {
+        "vocab_size": 248077,
+        "texts": 11673,
+        "tokens_per_word": 3.378,
+        "tokens_per_char": 0.643,
+        "tokens_per_text": {
+          "mean": 51.4,
+          "median": 41.0,
+          "p95": 121.0,
+          "p99": 158.0,
+          "max": 255
+        },
+        "share_over_64_tokens": 0.2617,
+        "share_over_128_tokens": 0.0397,
+        "unk_rate": null,
+        "byte_fallback_rate": 0.0
+      },
+      "bengali_sa": {
+        "vocab_size": 248077,
+        "texts": 7345,
+        "tokens_per_word": 3.736,
+        "tokens_per_char": 0.646,
+        "tokens_per_text": {
+          "mean": 49.4,
+          "median": 33.0,
+          "p95": 142.0,
+          "p99": 278.6,
+          "max": 980
+        },
+        "share_over_64_tokens": 0.2151,
+        "share_over_128_tokens": 0.0602,
+        "unk_rate": null,
+        "byte_fallback_rate": 0.0
+      }
+    },
+    "tigerllm-1b": {
+      "repo_id": "md-nishat-008/TigerLLM-1B-it",
+      "sentnob": {
+        "vocab_size": 262145,
+        "texts": 11673,
+        "tokens_per_word": 1.429,
+        "tokens_per_char": 0.272,
+        "tokens_per_text": {
+          "mean": 21.8,
+          "median": 18.0,
+          "p95": 50.0,
+          "p99": 65.0,
+          "max": 148
+        },
+        "share_over_64_tokens": 0.0114,
+        "share_over_128_tokens": 0.0001,
+        "unk_rate": 0.0,
+        "byte_fallback_rate": 5e-05
+      },
+      "bengali_sa": {
+        "vocab_size": 262145,
+        "texts": 7345,
+        "tokens_per_word": 1.584,
+        "tokens_per_char": 0.274,
+        "tokens_per_text": {
+          "mean": 20.9,
+          "median": 14.0,
+          "p95": 59.0,
+          "p99": 113.0,
+          "max": 404
+        },
+        "share_over_64_tokens": 0.04,
+        "share_over_128_tokens": 0.0079,
+        "unk_rate": 0.0,
+        "byte_fallback_rate": 4e-05
+      }
+    }
+  }
+}
