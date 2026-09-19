@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-19T16:46:10+00:00",
+    "git_commit": "a647e270ef50ca2e09f612e78029b8c6379498f1",
+    "command": "scripts/m1_label_check.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "dataset": "sentnob",
+  "split": "train",
+  "n": 50,
+  "agreement": 0.54,
+  "cohen_kappa": 0.2953,
+  "classes": [
+    "neutral",
+    "positive",
+    "negative"
+  ],
+  "confusion_matrix": {
+    "rows": "dataset label",
+    "columns": "your label",
+    "values": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        10,
+        13,
+        3
+      ],
+      [
+        3,
+        2,
+        13
+      ]
+    ]
+  },
+  "disagreements": [
+    {
+      "id": "train-7815",
+      "dataset": "positive",
+      "yours": "negative"
+    },
+    {
+      "id": "train-3905",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-6493",
+      "dataset": "positive",
+      "yours": "negative"
+    },
+    {
+      "id": "train-12027",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-12386",
+      "dataset": "neutral",
+      "yours": "negative"
+    },
+    {
+      "id": "train-5917",
+      "dataset": "negative",
+      "yours": "positive"
+    },
+    {
+      "id": "train-1692",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-9814",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-2185",
+      "dataset": "neutral",
+      "yours": "negative"
+    },
+    {
+      "id": "train-3347",
+      "dataset": "neutral",
+      "yours": "positive"
+    },
+    {
+      "id": "train-12397",
+      "dataset": "negative",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-10138",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-6854",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-8861",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-6730",
+      "dataset": "positive",
+      "yours": "negative"
+    },
+    {
+      "id": "train-9388",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-4471",
+      "dataset": "neutral",
+      "yours": "negative"
+    },
+    {
+      "id": "train-7877",
+      "dataset": "negative",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-10337",
+      "dataset": "negative",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-5503",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-10855",
+      "dataset": "positive",
+      "yours": "neutral"
+    },
+    {
+      "id": "train-1831",
+      "dataset": "negative",
+      "yours": "positive"
+    },
+    {
+      "id": "train-362",
+      "dataset": "neutral",
+      "yours": "positive"
+    }
+  ]
+}

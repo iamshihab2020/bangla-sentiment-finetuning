@@ -1,0 +1,385 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-19T16:47:42+00:00",
+    "git_commit": "a647e270ef50ca2e09f612e78029b8c6379498f1",
+    "command": "scripts/m2_e0_baselines.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E0",
+  "dataset": "sentnob",
+  "std": "sample (n-1) over seeds",
+  "table": [
+    {
+      "model": "majority",
+      "size": "250",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 18.96,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 39.76,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 19.46,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 41.24,
+        "std": 0.0
+      }
+    },
+    {
+      "model": "majority",
+      "size": "500",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 18.96,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 39.76,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 19.46,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 41.24,
+        "std": 0.0
+      }
+    },
+    {
+      "model": "majority",
+      "size": "1000",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 18.96,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 39.76,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 19.46,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 41.24,
+        "std": 0.0
+      }
+    },
+    {
+      "model": "majority",
+      "size": "2000",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 18.96,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 39.76,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 19.46,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 41.24,
+        "std": 0.0
+      }
+    },
+    {
+      "model": "majority",
+      "size": "4000",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 18.96,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 39.76,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 19.46,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 41.24,
+        "std": 0.0
+      }
+    },
+    {
+      "model": "majority",
+      "size": "full",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 18.96,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 39.76,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 19.46,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 41.24,
+        "std": 0.0
+      }
+    },
+    {
+      "model": "majority",
+      "size": "original",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 18.96,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 39.76,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 19.46,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 41.24,
+        "std": 0.0
+      }
+    },
+    {
+      "model": "tfidf_lr",
+      "size": "250",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 45.3,
+        "std": 0.98
+      },
+      "val_micro_f1": {
+        "mean": 57.84,
+        "std": 1.26
+      },
+      "test_macro_f1": {
+        "mean": 43.49,
+        "std": 1.39
+      },
+      "test_micro_f1": {
+        "mean": 55.74,
+        "std": 0.9
+      }
+    },
+    {
+      "model": "tfidf_lr",
+      "size": "500",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 49.09,
+        "std": 0.76
+      },
+      "val_micro_f1": {
+        "mean": 60.9,
+        "std": 0.99
+      },
+      "test_macro_f1": {
+        "mean": 46.71,
+        "std": 0.82
+      },
+      "test_micro_f1": {
+        "mean": 58.32,
+        "std": 1.05
+      }
+    },
+    {
+      "model": "tfidf_lr",
+      "size": "1000",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 52.43,
+        "std": 0.34
+      },
+      "val_micro_f1": {
+        "mean": 61.82,
+        "std": 0.47
+      },
+      "test_macro_f1": {
+        "mean": 52.1,
+        "std": 0.48
+      },
+      "test_micro_f1": {
+        "mean": 61.16,
+        "std": 0.29
+      }
+    },
+    {
+      "model": "tfidf_lr",
+      "size": "2000",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 55.59,
+        "std": 0.95
+      },
+      "val_micro_f1": {
+        "mean": 63.28,
+        "std": 0.93
+      },
+      "test_macro_f1": {
+        "mean": 56.2,
+        "std": 1.13
+      },
+      "test_micro_f1": {
+        "mean": 63.18,
+        "std": 0.87
+      }
+    },
+    {
+      "model": "tfidf_lr",
+      "size": "4000",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 58.2,
+        "std": 0.58
+      },
+      "val_micro_f1": {
+        "mean": 64.56,
+        "std": 0.29
+      },
+      "test_macro_f1": {
+        "mean": 59.31,
+        "std": 0.37
+      },
+      "test_micro_f1": {
+        "mean": 64.79,
+        "std": 0.32
+      }
+    },
+    {
+      "model": "tfidf_lr",
+      "size": "full",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 61.02,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 65.92,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 62.03,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 66.71,
+        "std": 0.0
+      }
+    },
+    {
+      "model": "tfidf_lr",
+      "size": "original",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "val_macro_f1": {
+        "mean": 68.14,
+        "std": 0.0
+      },
+      "val_micro_f1": {
+        "mean": 72.5,
+        "std": 0.0
+      },
+      "test_macro_f1": {
+        "mean": 67.87,
+        "std": 0.0
+      },
+      "test_micro_f1": {
+        "mean": 72.32,
+        "std": 0.0
+      }
+    }
+  ],
+  "gate": {
+    "check": "Majority-class test accuracy equals the SentNoB paper's (same test set and label mapping)",
+    "paper_majority_accuracy": 41.24,
+    "ours_majority_accuracy": 41.24,
+    "passed": true,
+    "context_paper_best_lexical": {
+      "precision": 57.71,
+      "recall": 73.39,
+      "f1": 64.61
+    },
+    "context_ours_tfidf_original": {
+      "accuracy": 72.32,
+      "macro_f1": 67.87
+    }
+  }
+}

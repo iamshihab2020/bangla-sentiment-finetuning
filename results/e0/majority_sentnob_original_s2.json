@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-19T16:46:22+00:00",
+    "git_commit": "a647e270ef50ca2e09f612e78029b8c6379498f1",
+    "command": "scripts/m2_e0_baselines.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E0",
+  "model": "majority",
+  "dataset": "sentnob",
+  "train_split": "train_original",
+  "train_rows": 12575,
+  "subset": "all rows of train_original",
+  "seed": 2,
+  "config": {},
+  "device": "cpu",
+  "split_checksums": {
+    "train_original": "d8eea365b6d2851973b7d64956d8ee8b6158b00af02f6dc8d15ff9299b0c9a61",
+    "val": "a16b64491c9a4fcd60cb648bc56042deb4441273bf5a99bf2bfa81cef8b81ab5",
+    "test": "8bd0b7411787843d96e6240670a9b8de9b11fcd44c24bbabf5b062592c69cd53"
+  },
+  "selection_done_on": "none (fixed settings, nothing tuned)",
+  "timing": {
+    "train_seconds": 0.01,
+    "test_inference_ms_per_example": 0.0002
+  },
+  "val": {
+    "macro_f1": 18.96,
+    "micro_f1": 39.76,
+    "accuracy": 39.76,
+    "per_class": {
+      "neutral": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 354
+      },
+      "positive": {
+        "precision": 39.76,
+        "recall": 100.0,
+        "f1": 56.89,
+        "support": 623
+      },
+      "negative": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          0,
+          354,
+          0
+        ],
+        [
+          0,
+          623,
+          0
+        ],
+        [
+          0,
+          590,
+          0
+        ]
+      ]
+    }
+  },
+  "test_predictions": "results/predictions/e0/majority_sentnob_original_s2.csv",
+  "test": {
+    "macro_f1": 19.46,
+    "micro_f1": 41.24,
+    "accuracy": 41.24,
+    "per_class": {
+      "neutral": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 361
+      },
+      "positive": {
+        "precision": 41.24,
+        "recall": 100.0,
+        "f1": 58.39,
+        "support": 654
+      },
+      "negative": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 571
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          0,
+          361,
+          0
+        ],
+        [
+          0,
+          654,
+          0
+        ],
+        [
+          0,
+          571,
+          0
+        ]
+      ]
+    }
+  }
+}

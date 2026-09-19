@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-19T16:47:20+00:00",
+    "git_commit": "a647e270ef50ca2e09f612e78029b8c6379498f1",
+    "command": "scripts/m2_e0_baselines.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E0",
+  "model": "tfidf_lr",
+  "dataset": "sentnob",
+  "train_split": "train",
+  "train_rows": 1000,
+  "subset": "data/splits/sentnob/train_order.json seed_2, first 1000 IDs",
+  "seed": 2,
+  "config": {
+    "word_ngrams": [
+      1,
+      2
+    ],
+    "char_ngrams": [
+      2,
+      5
+    ],
+    "char_analyzer": "char_wb",
+    "sublinear_tf": true,
+    "C": 1.0,
+    "max_iter": 2000
+  },
+  "device": "cpu",
+  "split_checksums": {
+    "train": "9a41286d7c331a0fb5239eb80a1162ec334715efd15d583479a62e695a7353a2",
+    "val": "a16b64491c9a4fcd60cb648bc56042deb4441273bf5a99bf2bfa81cef8b81ab5",
+    "test": "8bd0b7411787843d96e6240670a9b8de9b11fcd44c24bbabf5b062592c69cd53"
+  },
+  "selection_done_on": "none (fixed settings, nothing tuned)",
+  "timing": {
+    "train_seconds": 0.56,
+    "test_inference_ms_per_example": 0.2175
+  },
+  "val": {
+    "macro_f1": 52.07,
+    "micro_f1": 61.46,
+    "accuracy": 61.46,
+    "per_class": {
+      "neutral": {
+        "precision": 40.57,
+        "recall": 12.15,
+        "f1": 18.7,
+        "support": 354
+      },
+      "positive": {
+        "precision": 65.19,
+        "recall": 77.85,
+        "f1": 70.96,
+        "support": 623
+      },
+      "negative": {
+        "precision": 60.67,
+        "recall": 73.73,
+        "f1": 66.56,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          43,
+          139,
+          172
+        ],
+        [
+          28,
+          485,
+          110
+        ],
+        [
+          35,
+          120,
+          435
+        ]
+      ]
+    }
+  },
+  "test_predictions": "results/predictions/e0/tfidf_lr_sentnob_1000_s2.csv",
+  "test": {
+    "macro_f1": 52.58,
+    "micro_f1": 60.84,
+    "accuracy": 60.84,
+    "per_class": {
+      "neutral": {
+        "precision": 46.96,
+        "recall": 14.96,
+        "f1": 22.69,
+        "support": 361
+      },
+      "positive": {
+        "precision": 63.86,
+        "recall": 74.31,
+        "f1": 68.69,
+        "support": 654
+      },
+      "negative": {
+        "precision": 59.86,
+        "recall": 74.43,
+        "f1": 66.35,
+        "support": 571
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          54,
+          153,
+          154
+        ],
+        [
+          37,
+          486,
+          131
+        ],
+        [
+          24,
+          122,
+          425
+        ]
+      ]
+    }
+  }
+}
