@@ -36,15 +36,26 @@ def test_draw_shots_is_class_balanced_and_seeded():
 
 
 def test_label_logprobs_reads_the_positions_that_predict_the_label():
-    # Two sequences: prompt of length 2 then a 2-token label, and prompt of length 3 then a 1-token label.
-    logits = torch.full((2, 5, 7), -100.0)
-    logits[0, 1, 3] = 0.0   # position 1 predicts token at index 2, the label's first token
-    logits[0, 2, 4] = 0.0   # position 2 predicts token at index 3, the label's second token
-    logits[1, 2, 5] = 0.0   # position 2 predicts token at index 3
-    summed, first = label_logprobs(logits, [2, 3], [[3, 4], [5]])
+    # Left-padded sequences end with their label, and only the last 3 positions are kept.
+    # Row 0 has a 2-token label [3, 4]: window positions 0 and 1 predict them.
+    # Row 1 has a 1-token label [5]: window position 1 predicts it.
+    logits = torch.full((2, 3, 7), -100.0)
+    logits[0, 0, 3] = 0.0
+    logits[0, 1, 4] = 0.0
+    logits[1, 1, 5] = 0.0
+    summed, first = label_logprobs(logits, [[3, 4], [5]])
     assert summed[0] == pytest.approx(first[0] * 2, abs=1e-3)  # both label tokens scored, both certain
     assert float(first[0]) == pytest.approx(0.0, abs=1e-3)     # log(1) for a certain token
     assert float(summed[1]) == pytest.approx(0.0, abs=1e-3)
+
+
+def test_label_logprobs_ignores_the_wrong_positions():
+    # A confident prediction at a position that belongs to no label token must not be picked up.
+    logits = torch.full((1, 3, 7), -100.0)
+    logits[0, 1, 3] = logits[0, 1, 0] = 0.0  # the right position: two equal candidates, so log(0.5)
+    logits[0, 2, 3] = 0.0  # the position after the label: a certain token, so log(1)
+    _, first = label_logprobs(logits, [[3]])
+    assert float(first[0]) == pytest.approx(-0.693, abs=1e-3)  # not 0.0, which would mean the wrong row
 
 
 def test_predictions_take_the_highest_scoring_class():

@@ -1,0 +1,33 @@
+# E2 and the M3 prompt pilot. Everything here is decided on validation only.
+experiment: E2
+dataset: sentnob
+variants: [P-en, P-bn]
+few_shot:
+  per_class: 2        # 6 examples in total for a 3-class task
+  draws: [0, 1, 2]    # 3 different draws, reported as mean and standard deviation
+generation_check:
+  n_examples: 256     # subsample used only to report the invalid-output rate of free generation
+  max_new_tokens: 8
+models:
+  # max_text_tokens comes from the M1 p99 of comment length under each tokenizer
+  # (results/m1_tokenizer_stats.json), so no model has its comments truncated more than another.
+  gemma-3-1b:
+    repo_id: google/gemma-3-1b-it
+    max_text_tokens: 65
+    batch_size: 16
+    candidate: true
+  llama-3.2-1b:
+    repo_id: meta-llama/Llama-3.2-1B-Instruct
+    max_text_tokens: 289
+    batch_size: 8
+    candidate: true
+  qwen3.5-2b:
+    repo_id: Qwen/Qwen3.5-2B
+    max_text_tokens: 158
+    batch_size: 8
+    candidate: true
+  tigerllm-1b:
+    repo_id: md-nishat-008/TigerLLM-1B-it
+    max_text_tokens: 65
+    batch_size: 16
+    candidate: false   # reserved for RQ2, never eligible as the main LLM

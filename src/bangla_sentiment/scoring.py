@@ -38,46 +38,57 @@ def truncate(tok, text, max_tokens):
     return text if len(ids) <= max_tokens else tok.decode(ids[:max_tokens])
 
 
-def label_logprobs(logits, prompt_lens, label_ids):
+def label_logprobs(logits, label_ids):
     """Summed and first-token log-probabilities of each label continuation.
 
-    logits: [batch, time, vocab] for sequences built as prompt + label.
-    Position t of the logits predicts token t+1, so a label token at index i is scored at index i-1.
+    Sequences are left-padded and end with their label, and `logits` holds only the last K positions
+    (see `logits_to_keep` in score_labels). Position t predicts token t+1, so token j of a label of
+    length L sits at window position K - L + j - 1. Only those few positions are normalized, which
+    keeps memory small: a full log-softmax over a 262k vocabulary would be about 1 GB per batch.
     """
-    logprobs = torch.log_softmax(logits.float(), dim=-1)
+    window = logits.shape[1]
     summed, first = [], []
-    for row, (start, ids) in enumerate(zip(prompt_lens, label_ids)):
-        scores = [logprobs[row, start + k - 1, token] for k, token in enumerate(ids)]
-        summed.append(torch.stack(scores).sum())
-        first.append(scores[0])
+    for row, ids in enumerate(label_ids):
+        start = window - len(ids) - 1
+        scores = torch.log_softmax(logits[row, start:start + len(ids)].float(), dim=-1)
+        picked = scores[torch.arange(len(ids)), torch.tensor(ids, device=scores.device)]
+        summed.append(picked.sum())
+        first.append(picked[0])
     return torch.stack(summed), torch.stack(first)
 
 
 @torch.no_grad()
-def score_labels(model, tok, texts, variant, classes, batch_size=8, max_text_tokens=128):
-    """Log-probability of every class label for every text. Returns (summed, first) arrays [n, classes]."""
+def score_labels(model, tok, texts, variant, classes, batch_size=8, max_text_tokens=128, shots=()):
+    """Log-probability of every class label for every text. Returns (summed, first) arrays [n, classes].
+
+    `shots` are (text, class) pairs shown as worked examples before the comment, for few-shot prompting.
+    """
     words = label_words(variant, classes)
-    sequences, prompt_lens, label_ids = [], [], []
+    shots = [(truncate(tok, t, max_text_tokens), c) for t, c in shots]
+    sequences, label_ids = [], []
     for text in texts:
-        messages = build_messages(truncate(tok, text, max_text_tokens), variant, classes)
+        messages = build_messages(truncate(tok, text, max_text_tokens), variant, classes, shots=shots)
         # Render first, then encode without extra specials: the template already carries BOS
         rendered = tok.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
         prompt = tok(rendered, add_special_tokens=False)["input_ids"]
         for word in words:
             ids = tok(word, add_special_tokens=False)["input_ids"]
             sequences.append(prompt + ids)
-            prompt_lens.append(len(prompt))
             label_ids.append(ids)
+    keep = max(len(ids) for ids in label_ids) + 1  # positions needed to score the longest label
 
     summed, first = [], []
     pad = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
     for i in range(0, len(sequences), batch_size):
         chunk = sequences[i:i + batch_size]
         width = max(len(s) for s in chunk)
-        input_ids = torch.tensor([s + [pad] * (width - len(s)) for s in chunk], device=DEVICE)
-        mask = torch.tensor([[1] * len(s) + [0] * (width - len(s)) for s in chunk], device=DEVICE)
-        logits = model(input_ids=input_ids, attention_mask=mask).logits
-        s, f = label_logprobs(logits, prompt_lens[i:i + batch_size], label_ids[i:i + batch_size])
+        # Left padding, so every sequence ends with its label and the kept logits line up
+        input_ids = torch.tensor([[pad] * (width - len(s)) + s for s in chunk], device=DEVICE)
+        mask = torch.tensor([[0] * (width - len(s)) + [1] * len(s) for s in chunk], device=DEVICE)
+        positions = (mask.cumsum(-1) - 1).masked_fill(mask == 0, 1)  # padding must not shift positions
+        logits = model(input_ids=input_ids, attention_mask=mask, position_ids=positions,
+                       logits_to_keep=keep).logits
+        s, f = label_logprobs(logits, label_ids[i:i + batch_size])
         summed.append(s.cpu())
         first.append(f.cpu())
     n_classes = len(classes)
