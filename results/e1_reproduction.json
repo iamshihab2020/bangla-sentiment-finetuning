@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T11:14:52+00:00",
+    "git_commit": "2a09114382946f3e40acefd596e021c9d7a1128b",
+    "command": "scripts/m2_e1_banglabert.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E1",
+  "stage": "reproduction",
+  "learning_rate_grid": [
+    {
+      "learning_rate": 2e-05,
+      "val_macro_f1": 72.89,
+      "best_epoch": 4
+    },
+    {
+      "learning_rate": 3e-05,
+      "val_macro_f1": 72.93,
+      "best_epoch": 4
+    },
+    {
+      "learning_rate": 5e-05,
+      "val_macro_f1": 73.6,
+      "best_epoch": 4
+    }
+  ],
+  "chosen_learning_rate": 5e-05,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "test_macro_f1": {
+    "mean": 72.39,
+    "std": 1.17
+  },
+  "gate": {
+    "check": "E1 on train_original vs the BanglaBERT paper",
+    "published_macro_f1": 72.89,
+    "ours_macro_f1": {
+      "mean": 72.39,
+      "std": 1.17
+    },
+    "difference": -0.5,
+    "tolerance": 3.0,
+    "passed": true
+  }
+}

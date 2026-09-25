@@ -2,13 +2,37 @@
 
 How much labeled data does a small general-purpose LLM fine-tuned with QLoRA need to match a Bangla-native encoder (BanglaBERT) on noisy Bangla sentiment classification, and what does it cost on a 6 GB laptop GPU?
 
-**Status:** M0 (environment) done, M1 (data) nearly done; see [reports/data_card.md](reports/data_card.md). There are no experimental results yet. Every number that appears here later will come from a results file produced by an actual run. See [progress.md](progress.md) for the running log.
+**Status:** M0 (environment), M1 (data) and M2 (baselines) done; see [reports/data_card.md](reports/data_card.md) and the results below. The LLM experiments have not started. Every number here comes from a results file produced by an actual run. See [progress.md](progress.md) for the running log.
 
 ## Research questions
 
 - **RQ1, data efficiency (headline).** How does test macro-F1 grow with the number of labeled training examples for BanglaBERT (full fine-tuning) and for a 1B to 2B multilingual LLM (QLoRA)? Where do the learning curves cross, and what does each point cost in training time, memory and inference speed?
 - **RQ2, Bangla adaptation.** Does a Bangla-adapted LLM (TigerLLM-1B-it) keep its advantage over the general model with the same architecture (Gemma-3-1B-it) after identical QLoRA fine-tuning?
 - **RQ3, tokenizer cost.** How many tokens per Bangla word does each model use, and does that track cost and accuracy?
+
+## Results so far (M2)
+
+Test macro-F1 on the official SentNoB test split, mean and sample standard deviation over 3 seeds,
+from `results/e0_summary.json` and `results/e1_summary.json`. Training sizes are rows of the cleaned
+training split (leaked rows removed).
+
+| Training examples | Majority class | TF-IDF + logistic regression | BanglaBERT |
+|---|---|---|---|
+| 250 | 19.46 | 43.49 ± 1.39 | 60.42 ± 1.03 |
+| 500 | 19.46 | 46.71 ± 0.82 | 61.87 ± 1.03 |
+| 1,000 | 19.46 | 52.10 ± 0.48 | 63.13 ± 1.34 |
+| 2,000 | 19.46 | 56.20 ± 1.13 | 63.91 ± 1.26 |
+| 4,000 | 19.46 | 59.31 ± 0.37 | 65.48 ± 0.73 |
+| Full (11,673) | 19.46 | 62.03 ± 0.00 | 68.13 ± 0.35 |
+
+**Reproduction check (M2 gate).** Trained on the original training split, as the published work was,
+BanglaBERT reaches **72.39 ± 1.17** against the published **72.89** macro-F1, and the majority-class
+baseline reproduces the SentNoB paper's 41.24 exactly. The pipeline therefore matches both papers.
+
+**Leakage effect.** 902 training rows (7.2%) near-duplicate a validation or test row. Removing them
+costs **4.26** macro-F1 points for BanglaBERT (72.39 to 68.13) and **5.84** for TF-IDF (67.87 to 62.03).
+Published numbers on this dataset, including the 72.89 reproduced above, are inflated by that much.
+All learning-curve numbers in this repository use the cleaned split.
 
 ## Hardware
 

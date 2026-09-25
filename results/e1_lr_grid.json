@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T11:17:48+00:00",
+    "git_commit": "2a09114382946f3e40acefd596e021c9d7a1128b",
+    "command": "scripts/m2_e1_banglabert.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E1",
+  "stage": "learning_rate_grid",
+  "train_rows": 1000,
+  "grid": [
+    {
+      "learning_rate": 2e-05,
+      "val_macro_f1": 55.07,
+      "best_epoch": 5
+    },
+    {
+      "learning_rate": 3e-05,
+      "val_macro_f1": 61.91,
+      "best_epoch": 4
+    },
+    {
+      "learning_rate": 5e-05,
+      "val_macro_f1": 64.02,
+      "best_epoch": 3
+    }
+  ],
+  "chosen_learning_rate": 5e-05
+}

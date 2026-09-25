@@ -10,7 +10,7 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 | --- | --- | --- | --- |
 | M0 | Environment and budget | W1 (Sep 21 to Sep 27) | Done (Sep 19) |
 | M1 | Data | W2 (Sep 28 to Oct 4) | Done (Sep 19) |
-| M2 | Baselines E0 and E1 | W3 (Oct 5 to Oct 11) | In progress (Sep 19). E0 done, E1 next |
+| M2 | Baselines E0 and E1 | W3 (Oct 5 to Oct 11) | Done (Sep 25). Both gates passed |
 | M3 | Pilot and E2 | W4 (Oct 12 to Oct 18) | Not started |
 | M4 | RQ1 learning curves | W5 to W6 (Oct 19 to Nov 1) | Not started |
 | M5 | Ablations | W7 (Nov 2 to Nov 8) | Not started |
@@ -28,6 +28,32 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 #### Next
 #### Waiting on
 -->
+
+### 2026-09-25 (M2 done, E1 BanglaBERT)
+
+#### Done
+
+- **E1 code:** `src/bangla_sentiment/train_encoder.py`, `configs/e1.yaml`, `scripts/m2_e1_banglabert.py`, committed before the runs (`2a09114`), so every result points at a clean commit. Best epoch is chosen on validation and its weights are kept in memory; test is scored once at the end. 3 new tests, 19 passing.
+- **Reproduction gate passed:** learning-rate grid on `train_original` (validation only) chose 5e-5, then 3 seeds scored **72.39 ± 1.17** test macro-F1 against the published **72.89** (`results/e1_reproduction.json`). Difference 0.5 points, tolerance 3.
+- **Learning-rate grid on the cleaned split** (1k rows, seed 0, validation only): 2e-5 55.07, 3e-5 61.91, **5e-5 64.02**. 5e-5 is frozen for all later E1, E4, E5 and E6 runs (`results/e1_lr_grid.json`).
+- **E1 learning curve** (test macro-F1, mean ± sd over 3 seeds, `results/e1_summary.json`): 250: 60.42 ± 1.03, 500: 61.87 ± 1.03, 1k: 63.13 ± 1.34, 2k: 63.91 ± 1.26, 4k: 65.48 ± 0.73, full (11,673): 68.13 ± 0.35.
+- **Cost:** 2.3 to 2.9 GB peak VRAM per run, 38 s at 1k rows and 349 s at full data. The whole of E1 was 24 runs in about 1 hour 25 minutes.
+
+#### Findings
+
+- **Leakage inflates BanglaBERT by 4.26 points:** 72.39 on the original train split against 68.13 on the cleaned one. The word-counting baseline moved 5.84 points (67.87 against 62.03). So the published 72.89 is partly a leakage effect, and the study's honest number for BanglaBERT on SentNoB is about 68.
+- **Pretraining is worth roughly 11,000 labeled examples here.** BanglaBERT with 250 examples scores 60.42, close to word counting trained on all 11,673 rows (62.03). Against the same 250 rows, word counting gets 43.49.
+- **The curve is still rising at full data** (65.48 at 4k to 68.13 at 11.7k), so more data would still help. This is the point where adding BLP-2023 could be considered after M4.
+- **At full data the best epoch was epoch 1 for two of three seeds.** The learning rate is frozen at the value tuned on 1k rows, by design and equally for the LLM, but it means the large-data runs converge in one pass and then overfit. Worth a sentence in the limitations.
+- **Validation and test track each other closely** (full data: 68.01 validation against 68.13 test), which is a good sign that the selection procedure is not overfitting the validation set.
+
+#### Next
+
+- M3: E2 zero-shot and few-shot for all LLM candidates, prompt language pilot (P-en vs P-bn) on validation, a 1k QLoRA pilot per candidate, then Shihab picks the main LLM. Gate: label-probability scoring produces zero invalid predictions.
+
+#### Waiting on
+
+- Go-ahead to commit and push the E1 results.
 
 ### 2026-09-19 (M2 start, E0 baselines)
 

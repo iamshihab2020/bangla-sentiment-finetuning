@@ -1,0 +1,230 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T11:19:12+00:00",
+    "git_commit": "2a09114382946f3e40acefd596e021c9d7a1128b",
+    "command": "scripts/m2_e1_banglabert.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E1",
+  "dataset": "sentnob",
+  "train_split": "train",
+  "subset": "train_order.json seed_0, first 250 IDs",
+  "config": {
+    "model": "csebuetnlp/banglabert",
+    "max_seq_len": 128,
+    "train_batch_size": 32,
+    "max_epochs": 5,
+    "min_steps": 150,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "precision": "bf16 autocast"
+  },
+  "split_checksums": {
+    "train": "9a41286d7c331a0fb5239eb80a1162ec334715efd15d583479a62e695a7353a2",
+    "val": "a16b64491c9a4fcd60cb648bc56042deb4441273bf5a99bf2bfa81cef8b81ab5",
+    "test": "8bd0b7411787843d96e6240670a9b8de9b11fcd44c24bbabf5b062592c69cd53"
+  },
+  "model": "csebuetnlp/banglabert",
+  "learning_rate": 5e-05,
+  "seed": 0,
+  "train_rows": 250,
+  "epochs_run": 19,
+  "optimizer_steps": 152,
+  "best_epoch": 9,
+  "epoch_history": [
+    {
+      "epoch": 1,
+      "val_macro_f1": 24.0
+    },
+    {
+      "epoch": 2,
+      "val_macro_f1": 28.4
+    },
+    {
+      "epoch": 3,
+      "val_macro_f1": 47.01
+    },
+    {
+      "epoch": 4,
+      "val_macro_f1": 56.53
+    },
+    {
+      "epoch": 5,
+      "val_macro_f1": 57.21
+    },
+    {
+      "epoch": 6,
+      "val_macro_f1": 53.21
+    },
+    {
+      "epoch": 7,
+      "val_macro_f1": 61.71
+    },
+    {
+      "epoch": 8,
+      "val_macro_f1": 61.15
+    },
+    {
+      "epoch": 9,
+      "val_macro_f1": 63.27
+    },
+    {
+      "epoch": 10,
+      "val_macro_f1": 60.19
+    },
+    {
+      "epoch": 11,
+      "val_macro_f1": 61.77
+    },
+    {
+      "epoch": 12,
+      "val_macro_f1": 63.14
+    },
+    {
+      "epoch": 13,
+      "val_macro_f1": 62.65
+    },
+    {
+      "epoch": 14,
+      "val_macro_f1": 62.49
+    },
+    {
+      "epoch": 15,
+      "val_macro_f1": 62.55
+    },
+    {
+      "epoch": 16,
+      "val_macro_f1": 62.65
+    },
+    {
+      "epoch": 17,
+      "val_macro_f1": 62.54
+    },
+    {
+      "epoch": 18,
+      "val_macro_f1": 62.65
+    },
+    {
+      "epoch": 19,
+      "val_macro_f1": 62.7
+    }
+  ],
+  "selection_done_on": "val",
+  "efficiency": {
+    "trainable_params": 110619651,
+    "train_seconds": 64.5,
+    "peak_vram_gb": 2.315,
+    "ms_per_example_batch_1": 13.855,
+    "ms_per_example_batch_32": 1.249
+  },
+  "val": {
+    "macro_f1": 63.27,
+    "micro_f1": 67.58,
+    "accuracy": 67.58,
+    "per_class": {
+      "neutral": {
+        "precision": 45.21,
+        "recall": 37.29,
+        "f1": 40.87,
+        "support": 354
+      },
+      "positive": {
+        "precision": 69.85,
+        "recall": 81.06,
+        "f1": 75.04,
+        "support": 623
+      },
+      "negative": {
+        "precision": 76.45,
+        "recall": 71.53,
+        "f1": 73.91,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          132,
+          143,
+          79
+        ],
+        [
+          67,
+          505,
+          51
+        ],
+        [
+          93,
+          75,
+          422
+        ]
+      ]
+    }
+  },
+  "test": {
+    "macro_f1": 61.57,
+    "micro_f1": 65.83,
+    "accuracy": 65.83,
+    "per_class": {
+      "neutral": {
+        "precision": 40.95,
+        "recall": 35.73,
+        "f1": 38.17,
+        "support": 361
+      },
+      "positive": {
+        "precision": 71.1,
+        "recall": 76.76,
+        "f1": 73.82,
+        "support": 654
+      },
+      "negative": {
+        "precision": 73.1,
+        "recall": 72.33,
+        "f1": 72.71,
+        "support": 571
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          129,
+          144,
+          88
+        ],
+        [
+          88,
+          502,
+          64
+        ],
+        [
+          98,
+          60,
+          413
+        ]
+      ]
+    }
+  },
+  "test_predictions": "results/predictions/e1/curve_250_lr5e-05_s0.csv"
+}

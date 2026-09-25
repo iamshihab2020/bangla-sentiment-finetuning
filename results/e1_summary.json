@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T12:00:26+00:00",
+    "git_commit": "2a09114382946f3e40acefd596e021c9d7a1128b",
+    "command": "scripts/m2_e1_banglabert.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E1",
+  "dataset": "sentnob",
+  "learning_rate": 5e-05,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "std": "sample (n-1) over seeds",
+  "table": [
+    {
+      "size": "250",
+      "train_rows": 250,
+      "val_macro_f1": {
+        "mean": 62.89,
+        "std": 0.33
+      },
+      "test_macro_f1": {
+        "mean": 60.42,
+        "std": 1.03
+      },
+      "test_micro_f1": {
+        "mean": 64.46,
+        "std": 1.25
+      },
+      "train_seconds": {
+        "mean": 64.87,
+        "std": 0.32
+      }
+    },
+    {
+      "size": "500",
+      "train_rows": 500,
+      "val_macro_f1": {
+        "mean": 64.12,
+        "std": 1.42
+      },
+      "test_macro_f1": {
+        "mean": 61.87,
+        "std": 1.03
+      },
+      "test_micro_f1": {
+        "mean": 64.69,
+        "std": 1.33
+      },
+      "train_seconds": {
+        "mean": 48.0,
+        "std": 0.2
+      }
+    },
+    {
+      "size": "1000",
+      "train_rows": 1000,
+      "val_macro_f1": {
+        "mean": 64.03,
+        "std": 1.48
+      },
+      "test_macro_f1": {
+        "mean": 63.13,
+        "std": 1.34
+      },
+      "test_micro_f1": {
+        "mean": 67.47,
+        "std": 1.05
+      },
+      "train_seconds": {
+        "mean": 38.1,
+        "std": 0.35
+      }
+    },
+    {
+      "size": "2000",
+      "train_rows": 2000,
+      "val_macro_f1": {
+        "mean": 64.97,
+        "std": 0.77
+      },
+      "test_macro_f1": {
+        "mean": 63.91,
+        "std": 1.26
+      },
+      "test_micro_f1": {
+        "mean": 68.1,
+        "std": 0.72
+      },
+      "train_seconds": {
+        "mean": 65.8,
+        "std": 0.26
+      }
+    },
+    {
+      "size": "4000",
+      "train_rows": 4000,
+      "val_macro_f1": {
+        "mean": 66.99,
+        "std": 0.09
+      },
+      "test_macro_f1": {
+        "mean": 65.48,
+        "std": 0.73
+      },
+      "test_micro_f1": {
+        "mean": 68.31,
+        "std": 0.91
+      },
+      "train_seconds": {
+        "mean": 139.63,
+        "std": 6.35
+      }
+    },
+    {
+      "size": "full",
+      "train_rows": 11673,
+      "val_macro_f1": {
+        "mean": 68.01,
+        "std": 1.35
+      },
+      "test_macro_f1": {
+        "mean": 68.13,
+        "std": 0.35
+      },
+      "test_micro_f1": {
+        "mean": 70.78,
+        "std": 0.63
+      },
+      "train_seconds": {
+        "mean": 348.57,
+        "std": 3.79
+      }
+    }
+  ]
+}
