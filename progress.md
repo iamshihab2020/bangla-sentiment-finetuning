@@ -11,8 +11,8 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 | M0 | Environment and budget | W1 (Sep 21 to Sep 27) | Done (Sep 19) |
 | M1 | Data | W2 (Sep 28 to Oct 4) | Done (Sep 19) |
 | M2 | Baselines E0 and E1 | W3 (Oct 5 to Oct 11) | Done (Sep 25). Both gates passed |
-| M3 | Pilot and E2 | W4 (Oct 12 to Oct 18) | Experiments done (Sep 26). Gate passed. Waiting on the main LLM decision |
-| M4 | RQ1 learning curves | W5 to W6 (Oct 19 to Nov 1) | Not started |
+| M3 | Pilot and E2 | W4 (Oct 12 to Oct 18) | Done (Sep 27). Gate passed. Gemma 3 1B is the main LLM |
+| M4 | RQ1 learning curves | W5 to W6 (Oct 19 to Nov 1) | Next. Runner to be written |
 | M5 | Ablations | W7 (Nov 2 to Nov 8) | Not started |
 | M6 | Secondary experiments | W8 to W9 (Nov 9 to Nov 22) | Not started |
 | M7 | Analysis and report draft | W10 to W11 (Nov 23 to Dec 6) | Not started |
@@ -28,6 +28,37 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 #### Next
 #### Waiting on
 -->
+
+### 2026-09-27 (M3 closed, everything pushed)
+
+#### Done
+
+- **Epoch-cap check run and answered.** Gemma at 1k rows with a 5-epoch schedule scores 59.02 on
+  validation against 61.74 with 3 epochs, peaking at epoch 2 and then drifting down. The cap is not
+  holding the LLM back, so E3 stays at 3 epochs and M4 stays at about 13.9 hours.
+- **Main LLM recorded: Gemma 3 1B**, by the rule in PRD section 6. It also serves as the RQ2 control,
+  so E5 reuses its runs.
+- **A licence problem found and fixed before committing.** TigerLLM had answered one prompt by
+  quoting the comment back, so a fragment of SentNoB text sat inside a result file. Generated samples
+  are now redacted when they echo the input (`scoring.echoes_input`, with a test), the one affected
+  file was redacted and says so, and a 24-character sweep of all 177 result files found nothing else.
+- **Committed and pushed:** six commits, working tree clean, 44 tests passing.
+
+#### Findings
+
+- A longer schedule is not a better schedule here. The 3-epoch and 5-epoch traces differ even at
+  epochs 1 to 3, because the cosine decay is stretched over the whole run, so a 5-epoch run is a
+  different schedule and not the 3-epoch run continued.
+
+#### Next
+
+- Write the M4 runner: the E3 learning-rate grid (1e-4, 2e-4, 4e-4 at 1k rows, seed 0, validation
+  only), then the curve at 6 sizes and 3 seeds with test scoring, resumable.
+- Then Shihab runs the grid (about 40 minutes) and the curve (about 13.9 hours, an estimate).
+
+#### Waiting on
+
+- Nothing. M4 is mine to build next.
 
 ### 2026-09-26 (M3, the QLoRA pilot)
 
