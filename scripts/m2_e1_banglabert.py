@@ -4,6 +4,7 @@ Usage:
     uv run python scripts/m2_e1_banglabert.py --stage reproduction   # gate vs the published 72.89
     uv run python scripts/m2_e1_banglabert.py --stage grid           # learning rate, 1k, seed 0
     uv run python scripts/m2_e1_banglabert.py --stage curve          # 6 sizes x 3 seeds
+    uv run python scripts/m2_e1_banglabert.py --stage control        # A2 control, 3 seeds
     uv run python scripts/m2_e1_banglabert.py --stage all
 
 Stages, in order:
@@ -12,15 +13,20 @@ Stages, in order:
   grid          the same 3 learning rates on 1k rows of the cleaned train split, seed 0, validation
                 only. The winner is frozen for every later E1, E4, E5 and E6 run.
   curve         the frozen rate at all 6 learning-curve sizes and 3 seeds, with test scoring.
+  control       the A2 control: train_original minus the same number of rows per class that the
+                leakage removal dropped, chosen at random, 3 seeds, with test scoring. It separates
+                "the training set got smaller" from "the memorizable rows went away".
 
 Writes results/e1/<run>.json, predictions to results/predictions/e1/, and the summaries
-results/e1_reproduction.json, results/e1_lr_grid.json and results/e1_summary.json.
+results/e1_reproduction.json, results/e1_lr_grid.json, results/e1_summary.json and
+results/e1_control.json.
 """
 import argparse
 import statistics
 
 import yaml
 
+from bangla_sentiment.contamination import random_removal_subset, slice_frame, slice_summary
 from bangla_sentiment.data import DATASETS, SEEDS, load_split, read_json, splits_dir, training_subset
 from bangla_sentiment.evaluate import save_predictions
 from bangla_sentiment.train_encoder import train_encoder
@@ -31,13 +37,13 @@ GATE_TOLERANCE = 3.0  # PRD section 10, M2 gate
 GRID_SIZE = 1000  # tuning size, PRD section 8
 
 
-def run(name, cfg, classes, train, train_split, lr, seed, val, test, checksums, subset, score_test):
+def run(name, cfg, classes, train, train_split, lr, seed, val, test, checksums, subset, score_test, **extra):
     result, predictions = train_encoder(cfg, classes, train, val, test, lr, seed, score_test=score_test)
     result = {"experiment": "E1", "dataset": cfg["dataset"], "train_split": train_split, "subset": subset,
               "config": {k: cfg[k] for k in ("model", "max_seq_len", "train_batch_size", "max_epochs",
                                              "min_steps", "weight_decay", "warmup_ratio", "precision")},
               "split_checksums": {s: checksums[s] for s in (train_split, "val", "test")},
-              **result}
+              **extra, **result}
     if predictions is not None:
         path = RESULTS_DIR / "predictions" / "e1" / f"{name}.csv"
         save_predictions(predictions["ids"], predictions["gold"], predictions["pred"],
@@ -70,7 +76,7 @@ def mean_std(values):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", choices=["reproduction", "grid", "curve", "all"], default="all")
+    ap.add_argument("--stage", choices=["reproduction", "grid", "curve", "control", "all"], default="all")
     args = ap.parse_args()
 
     ensure_utf8()
@@ -135,6 +141,51 @@ def main():
             f1, secs = row["test_macro_f1"], row["train_seconds"]
             print(f"{row['size']:>5} {row['train_rows']:>8}   {f1['mean']:6.2f} +- {f1['std']:<5}   {secs['mean']}")
         print(f"wrote {path}")
+
+    if args.stage in ("control", "all"):
+        lr = read_json(RESULTS_DIR / "e1_lr_grid.json")["chosen_learning_rate"]
+        original, cleaned = load_split(spec.name, "train_original"), load_split(spec.name, "train")
+        print(f"A2 control at learning rate {lr:g}: train_original minus random rows, "
+              f"the same number per class that the leakage removal dropped")
+        runs, removal, matchable = [], None, []
+        for seed in SEEDS:
+            train, removal = random_removal_subset(original, cleaned, seed)
+            # A random removal drops a few leaked rows by chance; record how many stay memorizable.
+            matchable.append(slice_summary(slice_frame(train, test))["contaminated"]["rows"])
+            runs.append(run(f"control_random_removal_lr{lr:g}_s{seed}", cfg, classes, train,
+                            "train_original", lr, seed, val, test, checksums,
+                            f"train_original minus {len(original) - len(train)} rows drawn at random "
+                            f"with seed {seed}, matched per class to the leakage removal",
+                            score_test=True, control="random_removal"))
+        removal["contaminated_test_rows_still_matchable"] = matchable
+        removal["contaminated_test_rows_in_train_original"] = slice_summary(
+            slice_frame(original, test))["contaminated"]["rows"]
+        control_scores = mean_std([r["test"]["macro_f1"] for r in runs])
+        reference = {
+            "train_original": read_json(RESULTS_DIR / "e1_reproduction.json")["test_macro_f1"],
+            "train_cleaned": next(row["test_macro_f1"] for row in
+                                  read_json(RESULTS_DIR / "e1_summary.json")["table"] if row["size"] == "full"),
+        }
+        effects = {
+            "total_original_minus_cleaned": round(reference["train_original"]["mean"] - reference["train_cleaned"]["mean"], 2),
+            "size_only_original_minus_control": round(reference["train_original"]["mean"] - control_scores["mean"], 2),
+            "leakage_control_minus_cleaned": round(control_scores["mean"] - reference["train_cleaned"]["mean"], 2),
+        }
+        path = save_result({"experiment": "E1", "stage": "control", "analysis": "A2 control",
+                            "question": "Is the leakage effect just a smaller training set?",
+                            "learning_rate": lr, "seeds": list(SEEDS), "removal": removal,
+                            "test_macro_f1": {"control_random_removal": control_scores, **reference},
+                            "effects_in_macro_f1_points": effects}, "e1_control")
+        print(f"\n  train_original     {reference['train_original']['mean']:.2f} "
+              f"+- {reference['train_original']['std']}")
+        print(f"  random removal     {control_scores['mean']:.2f} +- {control_scores['std']}  (same size as cleaned)")
+        print(f"  cleaned train      {reference['train_cleaned']['mean']:.2f} "
+              f"+- {reference['train_cleaned']['std']}")
+        print(f"  of the {effects['total_original_minus_cleaned']:.2f} point drop, "
+              f"{effects['size_only_original_minus_control']:.2f} is the smaller training set and "
+              f"{effects['leakage_control_minus_cleaned']:.2f} is the leaked rows")
+        print(f"wrote {path}")
+        print("  now rerun scripts/m2_a2_contamination_slices.py to add the control to the slices")
 
 
 if __name__ == "__main__":
