@@ -4,7 +4,8 @@ import pytest
 import torch
 
 from bangla_sentiment.prompts import LABEL_WORDS, build_messages, draw_shots, label_words
-from bangla_sentiment.scoring import label_logprobs, parse_answer, predictions_from_scores
+from bangla_sentiment.scoring import (echoes_input, label_logprobs, parse_answer,
+                                      predictions_from_scores)
 
 CLASSES = ["neutral", "positive", "negative"]
 
@@ -78,3 +79,11 @@ def test_parse_answer_accepts_only_a_label_word(answer, expected):
 
 def test_bangla_label_words_are_distinct():
     assert len(set(LABEL_WORDS["P-bn"].values())) == 3
+
+
+def test_echoes_input_catches_a_model_quoting_the_comment_back():
+    # TigerLLM did exactly this in M3, which would have put SentNoB text in a committed result file.
+    comment = "আর আমার খুবেই আনন্দ লাগলো"
+    assert echoes_input('The comment "আর আমার খুবেই আনন্দ', comment)
+    assert not echoes_input("negative", comment)
+    assert not echoes_input("এই মন্তব্যটির অনুভূতি বিশ্লেষণ করতে", comment)  # its own words, not the comment

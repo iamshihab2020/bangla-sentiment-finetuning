@@ -121,6 +121,16 @@ def generate_answers(model, tok, texts, variant, classes, batch_size=8, max_new_
     return answers
 
 
+def echoes_input(answer, text, min_run=8):
+    """True when the generated answer quotes the comment back, in a run of `min_run` characters.
+
+    Generated samples are saved in result files to illustrate the invalid-output rate, and a model
+    that repeats the comment would put dataset text in the repository. SentNoB is CC BY-ND, so those
+    samples are redacted instead (PRD section 5).
+    """
+    return any(text[i:i + min_run] in answer for i in range(max(1, len(text) - min_run + 1)))
+
+
 def parse_answer(answer, variant, classes):
     """The class whose label word the generated text starts with, or None if it is not a valid answer."""
     cleaned = answer.strip().lower().lstrip("*# ").strip()

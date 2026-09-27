@@ -25,8 +25,8 @@ import yaml
 from bangla_sentiment.data import DATASETS, load_split, read_json, training_subset
 from bangla_sentiment.evaluate import classification_metrics
 from bangla_sentiment.prompts import draw_shots, label_words
-from bangla_sentiment.scoring import (first_tokens_differ, generate_answers, load_4bit, parse_answer,
-                                      predictions_from_scores, score_labels)
+from bangla_sentiment.scoring import (echoes_input, first_tokens_differ, generate_answers, load_4bit,
+                                      parse_answer, predictions_from_scores, score_labels)
 from bangla_sentiment.utils import CONFIGS_DIR, RESULTS_DIR, ensure_utf8, save_result, set_seed
 
 SHOT_POOL_SIZE = 4000  # few-shot examples are drawn from the cleaned train split, seed 0
@@ -75,7 +75,9 @@ def generation_check(model, tok, frame, variant, classes, cfg, cfg_model):
         "invalid_rate": round(sum(p is None for p in parsed) / len(parsed), 4),
         "macro_f1_on_valid_answers": (classification_metrics([g for _, g in valid], [p for p, _ in valid],
                                                              classes)["macro_f1"] if valid else None),
-        "example_answers": [a[:60] for a in answers[:3]],
+        # Redacted when the model quotes the comment back: no dataset text in the repository
+        "example_answers": ["[redacted: the model echoed the comment]" if echoes_input(a, t) else a[:60]
+                            for a, t in zip(answers[:3], sample["text"][:3])],
     }
 
 
