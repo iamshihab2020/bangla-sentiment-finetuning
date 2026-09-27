@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T15:46:17+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "zeroshot",
+  "model": "llama-3.2-1b",
+  "repo_id": "meta-llama/Llama-3.2-1B-Instruct",
+  "candidate": true,
+  "variant": "P-en",
+  "split": "val",
+  "shots": 0,
+  "max_text_tokens": 289,
+  "scoring_rule": "first_token",
+  "label_first_tokens_distinct": true,
+  "rules_agree": 1.0,
+  "invalid_predictions": 0,
+  "val": {
+    "macro_f1": 14.84,
+    "micro_f1": 23.93,
+    "accuracy": 23.93,
+    "per_class": {
+      "neutral": {
+        "precision": 22.87,
+        "recall": 99.44,
+        "f1": 37.19,
+        "support": 354
+      },
+      "positive": {
+        "precision": 80.0,
+        "recall": 2.57,
+        "f1": 4.98,
+        "support": 623
+      },
+      "negative": {
+        "precision": 87.5,
+        "recall": 1.19,
+        "f1": 2.34,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          352,
+          1,
+          1
+        ],
+        [
+          607,
+          16,
+          0
+        ],
+        [
+          580,
+          3,
+          7
+        ]
+      ]
+    }
+  },
+  "predicted_counts": {
+    "neutral": 1539,
+    "positive": 20,
+    "negative": 8
+  },
+  "timing": {
+    "seconds": 200.8,
+    "examples_per_s": 7.8,
+    "peak_vram_gb": 1.678
+  },
+  "generation": {
+    "n_examples": 256,
+    "invalid_rate": 0.0,
+    "macro_f1_on_valid_answers": 39.57,
+    "example_answers": [
+      "Positive",
+      "Positive",
+      "Positive"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T19:03:49+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage fewshot",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "fewshot",
+  "variant": "P-en",
+  "shots_per_class": 2,
+  "table": [
+    {
+      "model": "gemma-3-1b",
+      "candidate": true,
+      "variant": "P-en",
+      "val_macro_f1": {
+        "mean": 53.75,
+        "std": 2.78
+      }
+    },
+    {
+      "model": "llama-3.2-1b",
+      "candidate": true,
+      "variant": "P-en",
+      "val_macro_f1": {
+        "mean": 33.12,
+        "std": 4.53
+      }
+    },
+    {
+      "model": "qwen3.5-2b",
+      "candidate": true,
+      "variant": "P-en",
+      "val_macro_f1": {
+        "mean": 53.13,
+        "std": 1.55
+      }
+    },
+    {
+      "model": "tigerllm-1b",
+      "candidate": false,
+      "variant": "P-en",
+      "val_macro_f1": {
+        "mean": 53.48,
+        "std": 2.98
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T16:10:49+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "prompt_pilot",
+  "split": "val",
+  "mean_macro_f1_over_candidates": {
+    "P-en": 35.66,
+    "P-bn": 21.56
+  },
+  "per_model": {
+    "gemma-3-1b/P-en": 44.7,
+    "gemma-3-1b/P-bn": 39.98,
+    "llama-3.2-1b/P-en": 14.84,
+    "llama-3.2-1b/P-bn": 12.29,
+    "qwen3.5-2b/P-en": 47.43,
+    "qwen3.5-2b/P-bn": 12.4,
+    "tigerllm-1b/P-en": 39.46,
+    "tigerllm-1b/P-bn": 22.95
+  },
+  "chosen_variant": "P-en",
+  "max_invalid_generation_rate": 1.0,
+  "gate_zero_invalid_scored_predictions": true
+}

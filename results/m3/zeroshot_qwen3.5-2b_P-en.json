@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T15:57:57+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "zeroshot",
+  "model": "qwen3.5-2b",
+  "repo_id": "Qwen/Qwen3.5-2B",
+  "candidate": true,
+  "variant": "P-en",
+  "split": "val",
+  "shots": 0,
+  "max_text_tokens": 158,
+  "scoring_rule": "first_token",
+  "label_first_tokens_distinct": true,
+  "rules_agree": 1.0,
+  "invalid_predictions": 0,
+  "val": {
+    "macro_f1": 47.43,
+    "micro_f1": 47.29,
+    "accuracy": 47.29,
+    "per_class": {
+      "neutral": {
+        "precision": 29.63,
+        "recall": 68.64,
+        "f1": 41.4,
+        "support": 354
+      },
+      "positive": {
+        "precision": 78.93,
+        "recall": 33.07,
+        "f1": 46.61,
+        "support": 623
+      },
+      "negative": {
+        "precision": 60.08,
+        "recall": 49.49,
+        "f1": 54.28,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          243,
+          24,
+          87
+        ],
+        [
+          310,
+          206,
+          107
+        ],
+        [
+          267,
+          31,
+          292
+        ]
+      ]
+    }
+  },
+  "predicted_counts": {
+    "neutral": 820,
+    "positive": 261,
+    "negative": 486
+  },
+  "timing": {
+    "seconds": 333.8,
+    "examples_per_s": 4.69,
+    "peak_vram_gb": 3.042
+  },
+  "generation": {
+    "n_examples": 256,
+    "invalid_rate": 0.0,
+    "macro_f1_on_valid_answers": 48.65,
+    "example_answers": [
+      "negative\n",
+      "neutral\n",
+      "positive\n"
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-26T10:11:25+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27-dirty",
+    "command": "scripts/m2_e1_banglabert.py --stage control",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E1",
+  "stage": "control",
+  "analysis": "A2 control",
+  "question": "Is the leakage effect just a smaller training set?",
+  "learning_rate": 5e-05,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "removal": {
+    "rows_removed_per_class": {
+      "negative": 404,
+      "neutral": 163,
+      "positive": 335
+    },
+    "rows_kept": 11673,
+    "contaminated_test_rows_still_matchable": [
+      410,
+      404,
+      411
+    ],
+    "contaminated_test_rows_in_train_original": 438
+  },
+  "test_macro_f1": {
+    "control_random_removal": {
+      "mean": 71.45,
+      "std": 0.81
+    },
+    "train_original": {
+      "mean": 72.39,
+      "std": 1.17
+    },
+    "train_cleaned": {
+      "mean": 68.13,
+      "std": 0.35
+    }
+  },
+  "effects_in_macro_f1_points": {
+    "total_original_minus_cleaned": 4.26,
+    "size_only_original_minus_control": 0.94,
+    "leakage_control_minus_cleaned": 3.32
+  }
+}

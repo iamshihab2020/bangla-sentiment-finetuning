@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T15:51:39+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "zeroshot",
+  "model": "llama-3.2-1b",
+  "repo_id": "meta-llama/Llama-3.2-1B-Instruct",
+  "candidate": true,
+  "variant": "P-bn",
+  "split": "val",
+  "shots": 0,
+  "max_text_tokens": 289,
+  "scoring_rule": "full_label",
+  "label_first_tokens_distinct": false,
+  "rules_agree": 0.8653,
+  "invalid_predictions": 0,
+  "val": {
+    "macro_f1": 12.29,
+    "micro_f1": 22.59,
+    "accuracy": 22.59,
+    "per_class": {
+      "neutral": {
+        "precision": 22.59,
+        "recall": 100.0,
+        "f1": 36.86,
+        "support": 354
+      },
+      "positive": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 623
+      },
+      "negative": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          354,
+          0,
+          0
+        ],
+        [
+          623,
+          0,
+          0
+        ],
+        [
+          590,
+          0,
+          0
+        ]
+      ]
+    }
+  },
+  "predicted_counts": {
+    "neutral": 1567,
+    "positive": 0,
+    "negative": 0
+  },
+  "timing": {
+    "seconds": 296.2,
+    "examples_per_s": 5.29,
+    "peak_vram_gb": 1.783
+  },
+  "generation": {
+    "n_examples": 256,
+    "invalid_rate": 1.0,
+    "macro_f1_on_valid_answers": null,
+    "example_answers": [
+      "নিরপেক",
+      "নিরপেক",
+      "নিরপেক"
+    ]
+  }
+}

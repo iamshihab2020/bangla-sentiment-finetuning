@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T16:10:49+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "zeroshot",
+  "model": "tigerllm-1b",
+  "repo_id": "md-nishat-008/TigerLLM-1B-it",
+  "candidate": false,
+  "variant": "P-bn",
+  "split": "val",
+  "shots": 0,
+  "max_text_tokens": 65,
+  "scoring_rule": "first_token",
+  "label_first_tokens_distinct": true,
+  "rules_agree": 0.9892,
+  "invalid_predictions": 0,
+  "val": {
+    "macro_f1": 22.95,
+    "micro_f1": 39.44,
+    "accuracy": 39.44,
+    "per_class": {
+      "neutral": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 354
+      },
+      "positive": {
+        "precision": 56.32,
+        "recall": 7.87,
+        "f1": 13.8,
+        "support": 623
+      },
+      "negative": {
+        "precision": 38.52,
+        "recall": 96.44,
+        "f1": 55.06,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          0,
+          19,
+          335
+        ],
+        [
+          1,
+          49,
+          573
+        ],
+        [
+          2,
+          19,
+          569
+        ]
+      ]
+    }
+  },
+  "predicted_counts": {
+    "neutral": 3,
+    "positive": 87,
+    "negative": 1477
+  },
+  "timing": {
+    "seconds": 103.7,
+    "examples_per_s": 15.11,
+    "peak_vram_gb": 1.14
+  },
+  "generation": {
+    "n_examples": 256,
+    "invalid_rate": 1.0,
+    "macro_f1_on_valid_answers": null,
+    "example_answers": [
+      "এই মন্তব্যটির অনুভূতি বিশ্লেষণ করতে আমরা ধ",
+      "এই মন্তব্যটির অনুভূতি বিশ্লেষণ করতে হলে আমরা",
+      "এই মন্তব্যটির অনুভূতি বিশ্লেষণ করতে হলে,"
+    ]
+  }
+}

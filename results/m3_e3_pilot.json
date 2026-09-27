@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-26T11:53:43+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27-dirty",
+    "command": "scripts/m3_e3_pilot.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E3",
+  "stage": "pilot",
+  "split": "val",
+  "prompt_variant": "P-en",
+  "learning_rate": 0.0002,
+  "train_rows": 1000,
+  "epoch_selection_rows": 500,
+  "selection_rule": "PRD section 6, plus the cost rule in the decision log",
+  "note": "projected_full_curve_hours_estimate is an estimate from measured speeds, not a measurement",
+  "table": [
+    {
+      "model": "gemma-3-1b",
+      "candidate": true,
+      "qlora_1k_val_macro_f1": 61.74,
+      "zero_shot_val_macro_f1": 44.7,
+      "few_shot_val_macro_f1": 53.75,
+      "tokens_per_word": 1.429,
+      "max_text_tokens": 65,
+      "train_examples_per_s": 4.22,
+      "train_minutes_1k": 11.9,
+      "peak_vram_gb": 2.995,
+      "fits_in_5gb": true,
+      "batch_size_reductions": [],
+      "projected_full_curve_hours_estimate": 13.9
+    },
+    {
+      "model": "llama-3.2-1b",
+      "candidate": true,
+      "qlora_1k_val_macro_f1": 60.15,
+      "zero_shot_val_macro_f1": 14.84,
+      "few_shot_val_macro_f1": 33.12,
+      "tokens_per_word": 6.235,
+      "max_text_tokens": 289,
+      "train_examples_per_s": 2.96,
+      "train_minutes_1k": 16.9,
+      "peak_vram_gb": 3.203,
+      "fits_in_5gb": true,
+      "batch_size_reductions": [],
+      "projected_full_curve_hours_estimate": 22.0
+    },
+    {
+      "model": "qwen3.5-2b",
+      "candidate": true,
+      "qlora_1k_val_macro_f1": 58.36,
+      "zero_shot_val_macro_f1": 47.43,
+      "few_shot_val_macro_f1": 53.13,
+      "tokens_per_word": 3.378,
+      "max_text_tokens": 158,
+      "train_examples_per_s": 1.55,
+      "train_minutes_1k": 32.3,
+      "peak_vram_gb": 4.334,
+      "fits_in_5gb": true,
+      "batch_size_reductions": [],
+      "projected_full_curve_hours_estimate": 38.6
+    }
+  ],
+  "rule_inputs": {
+    "highest_val_macro_f1": "gemma-3-1b",
+    "within_1_point": [
+      "gemma-3-1b"
+    ],
+    "fewest_tokens_per_word_among_those": "gemma-3-1b",
+    "cost_rule_applies": false,
+    "cheaper_candidates_within_2_points": [],
+    "decision": "Shihab decides and records it in the PRD decision log"
+  }
+}

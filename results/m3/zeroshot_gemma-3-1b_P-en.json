@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T15:40:58+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "zeroshot",
+  "model": "gemma-3-1b",
+  "repo_id": "google/gemma-3-1b-it",
+  "candidate": true,
+  "variant": "P-en",
+  "split": "val",
+  "shots": 0,
+  "max_text_tokens": 65,
+  "scoring_rule": "first_token",
+  "label_first_tokens_distinct": true,
+  "rules_agree": 1.0,
+  "invalid_predictions": 0,
+  "val": {
+    "macro_f1": 44.7,
+    "micro_f1": 58.84,
+    "accuracy": 58.84,
+    "per_class": {
+      "neutral": {
+        "precision": 75.0,
+        "recall": 0.85,
+        "f1": 1.68,
+        "support": 354
+      },
+      "positive": {
+        "precision": 66.67,
+        "recall": 65.81,
+        "f1": 66.24,
+        "support": 623
+      },
+      "negative": {
+        "precision": 53.69,
+        "recall": 86.27,
+        "f1": 66.19,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          3,
+          124,
+          227
+        ],
+        [
+          1,
+          410,
+          212
+        ],
+        [
+          0,
+          81,
+          509
+        ]
+      ]
+    }
+  },
+  "predicted_counts": {
+    "neutral": 4,
+    "positive": 615,
+    "negative": 948
+  },
+  "timing": {
+    "seconds": 76.3,
+    "examples_per_s": 20.53,
+    "peak_vram_gb": 1.116
+  },
+  "generation": {
+    "n_examples": 256,
+    "invalid_rate": 0.0,
+    "macro_f1_on_valid_answers": 43.93,
+    "example_answers": [
+      "Positive\n",
+      "Positive\n",
+      "Positive\n"
+    ]
+  }
+}

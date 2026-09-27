@@ -1,7 +1,7 @@
 {
   "meta": {
-    "timestamp_utc": "2026-09-19T15:41:55+00:00",
-    "git_commit": "db101bc5ef800b81e033bba1afcc1028447226f0",
+    "timestamp_utc": "2026-09-26T10:30:29+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27-dirty",
     "command": "scripts/m1_tokenizer_stats.py",
     "python": "3.12.10",
     "platform": "Windows-11-10.0.26200-SP0",
@@ -21,6 +21,14 @@
         "texts": 11673,
         "tokens_per_word": 1.163,
         "tokens_per_char": 0.221,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 1.163,
+          "bangla_words_only": 1.175,
+          "distinct_bangla_words": 1.771,
+          "bangla_word_share": 0.9137,
+          "distinct_bangla_words_count": 22412
+        },
         "tokens_per_text": {
           "mean": 17.7,
           "median": 14.0,
@@ -38,6 +46,14 @@
         "texts": 7345,
         "tokens_per_word": 1.398,
         "tokens_per_char": 0.242,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 1.398,
+          "bangla_words_only": 1.363,
+          "distinct_bangla_words": 2.421,
+          "bangla_word_share": 0.9634,
+          "distinct_bangla_words_count": 16718
+        },
         "tokens_per_text": {
           "mean": 18.5,
           "median": 12.0,
@@ -58,6 +74,14 @@
         "texts": 11673,
         "tokens_per_word": 6.235,
         "tokens_per_char": 1.187,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 6.235,
+          "bangla_words_only": 6.719,
+          "distinct_bangla_words": 8.908,
+          "bangla_word_share": 0.9137,
+          "distinct_bangla_words_count": 22412
+        },
         "tokens_per_text": {
           "mean": 94.9,
           "median": 76.0,
@@ -75,6 +99,14 @@
         "texts": 7345,
         "tokens_per_word": 6.876,
         "tokens_per_char": 1.188,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 6.876,
+          "bangla_words_only": 7.061,
+          "distinct_bangla_words": 9.594,
+          "bangla_word_share": 0.9634,
+          "distinct_bangla_words_count": 16718
+        },
         "tokens_per_text": {
           "mean": 90.9,
           "median": 60.0,
@@ -95,6 +127,14 @@
         "texts": 11673,
         "tokens_per_word": 1.429,
         "tokens_per_char": 0.272,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 1.429,
+          "bangla_words_only": 1.457,
+          "distinct_bangla_words": 2.384,
+          "bangla_word_share": 0.9137,
+          "distinct_bangla_words_count": 22412
+        },
         "tokens_per_text": {
           "mean": 21.8,
           "median": 18.0,
@@ -112,6 +152,14 @@
         "texts": 7345,
         "tokens_per_word": 1.584,
         "tokens_per_char": 0.274,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 1.584,
+          "bangla_words_only": 1.586,
+          "distinct_bangla_words": 2.69,
+          "bangla_word_share": 0.9634,
+          "distinct_bangla_words_count": 16718
+        },
         "tokens_per_text": {
           "mean": 20.9,
           "median": 14.0,
@@ -132,6 +180,14 @@
         "texts": 11673,
         "tokens_per_word": 3.378,
         "tokens_per_char": 0.643,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 3.378,
+          "bangla_words_only": 3.589,
+          "distinct_bangla_words": 4.871,
+          "bangla_word_share": 0.9137,
+          "distinct_bangla_words_count": 22412
+        },
         "tokens_per_text": {
           "mean": 51.4,
           "median": 41.0,
@@ -149,6 +205,14 @@
         "texts": 7345,
         "tokens_per_word": 3.736,
         "tokens_per_char": 0.646,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 3.736,
+          "bangla_words_only": 3.81,
+          "distinct_bangla_words": 5.45,
+          "bangla_word_share": 0.9634,
+          "distinct_bangla_words_count": 16718
+        },
         "tokens_per_text": {
           "mean": 49.4,
           "median": 33.0,
@@ -169,6 +233,14 @@
         "texts": 11673,
         "tokens_per_word": 1.429,
         "tokens_per_char": 0.272,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 1.429,
+          "bangla_words_only": 1.457,
+          "distinct_bangla_words": 2.384,
+          "bangla_word_share": 0.9137,
+          "distinct_bangla_words_count": 22412
+        },
         "tokens_per_text": {
           "mean": 21.8,
           "median": 18.0,
@@ -186,6 +258,14 @@
         "texts": 7345,
         "tokens_per_word": 1.584,
         "tokens_per_char": 0.274,
+        "fertility": {
+          "definition": "tokens divided by whitespace words, on this split",
+          "all_words": 1.584,
+          "bangla_words_only": 1.586,
+          "distinct_bangla_words": 2.69,
+          "bangla_word_share": 0.9634,
+          "distinct_bangla_words_count": 16718
+        },
         "tokens_per_text": {
           "mean": 20.9,
           "median": 14.0,

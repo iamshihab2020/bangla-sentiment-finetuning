@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-26T11:03:04+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27-dirty",
+    "command": "scripts/m3_e3_pilot.py",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E3",
+  "stage": "pilot",
+  "model": "meta-llama/Llama-3.2-1B-Instruct",
+  "split": "val",
+  "candidate": true,
+  "max_text_tokens": 289,
+  "config": {
+    "lora": {
+      "r": 16,
+      "alpha": 32,
+      "dropout": 0.05,
+      "target_modules": "all-linear"
+    },
+    "quantization": {
+      "bits": 4,
+      "quant_type": "nf4",
+      "double_quant": true,
+      "compute_dtype": "bfloat16"
+    },
+    "effective_batch_size": 16,
+    "max_epochs": 3,
+    "min_steps": 150,
+    "warmup_ratio": 0.03,
+    "weight_decay": 0.0,
+    "gradient_checkpointing": true,
+    "optimizer": "paged_adamw_8bit",
+    "scheduler": "cosine"
+  },
+  "prompt_variant": "P-en",
+  "scoring_rule": "first_token",
+  "learning_rate": 0.0002,
+  "seed": 0,
+  "train_rows": 1000,
+  "epochs_run": 3,
+  "optimizer_steps": 189,
+  "best_epoch": 3,
+  "epoch_history": [
+    {
+      "epoch": 1,
+      "eval_val_macro_f1": 46.0
+    },
+    {
+      "epoch": 2,
+      "eval_val_macro_f1": 58.86
+    },
+    {
+      "epoch": 3,
+      "eval_val_macro_f1": 59.48
+    }
+  ],
+  "epoch_selection_rows": 500,
+  "selection_done_on": "val",
+  "efficiency": {
+    "trainable_params": 11272192,
+    "trainable_pct": 1.482,
+    "train_batch_size": 2,
+    "gradient_accumulation": 8,
+    "train_seconds": 1012.2,
+    "train_examples_per_s": 2.96,
+    "val_seconds": 374.4,
+    "val_examples_per_s": 4.18,
+    "peak_vram_gb": 3.203,
+    "total_seconds": 1756.0,
+    "batch_size_reductions": []
+  },
+  "val": {
+    "macro_f1": 60.15,
+    "micro_f1": 62.41,
+    "accuracy": 62.41,
+    "per_class": {
+      "neutral": {
+        "precision": 40.63,
+        "recall": 47.18,
+        "f1": 43.66,
+        "support": 354
+      },
+      "positive": {
+        "precision": 69.66,
+        "recall": 69.66,
+        "f1": 69.66,
+        "support": 623
+      },
+      "negative": {
+        "precision": 70.73,
+        "recall": 63.9,
+        "f1": 67.14,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          167,
+          99,
+          88
+        ],
+        [
+          121,
+          434,
+          68
+        ],
+        [
+          123,
+          90,
+          377
+        ]
+      ]
+    }
+  }
+}

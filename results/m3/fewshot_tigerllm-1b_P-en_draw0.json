@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T18:55:05+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage fewshot",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "fewshot",
+  "model": "tigerllm-1b",
+  "repo_id": "md-nishat-008/TigerLLM-1B-it",
+  "candidate": false,
+  "variant": "P-en",
+  "split": "val",
+  "shots": 6,
+  "draw": 0,
+  "shot_ids": [
+    "train-2584",
+    "train-12230",
+    "train-6844",
+    "train-2792",
+    "train-7314",
+    "train-5554",
+    "train-4619"
+  ],
+  "max_text_tokens": 65,
+  "scoring_rule": "first_token",
+  "label_first_tokens_distinct": true,
+  "rules_agree": 1.0,
+  "invalid_predictions": 0,
+  "val": {
+    "macro_f1": 53.08,
+    "micro_f1": 57.12,
+    "accuracy": 57.12,
+    "per_class": {
+      "neutral": {
+        "precision": 38.41,
+        "recall": 31.36,
+        "f1": 34.53,
+        "support": 354
+      },
+      "positive": {
+        "precision": 75.0,
+        "recall": 48.64,
+        "f1": 59.01,
+        "support": 623
+      },
+      "negative": {
+        "precision": 55.03,
+        "recall": 81.53,
+        "f1": 65.71,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          111,
+          47,
+          196
+        ],
+        [
+          123,
+          303,
+          197
+        ],
+        [
+          55,
+          54,
+          481
+        ]
+      ]
+    }
+  },
+  "predicted_counts": {
+    "neutral": 289,
+    "positive": 404,
+    "negative": 874
+  },
+  "timing": {
+    "seconds": 210.8,
+    "examples_per_s": 7.43,
+    "peak_vram_gb": 1.328
+  }
+}

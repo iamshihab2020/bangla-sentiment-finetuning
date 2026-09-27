@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "timestamp_utc": "2026-09-25T16:08:46+00:00",
+    "git_commit": "3bf501f52ab94609cfd9608dcb66efb6e10eab27",
+    "command": "scripts/m3_e2_pilot.py --stage all",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "torch": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "bitsandbytes": "0.50.2"
+  },
+  "experiment": "E2",
+  "stage": "zeroshot",
+  "model": "tigerllm-1b",
+  "repo_id": "md-nishat-008/TigerLLM-1B-it",
+  "candidate": false,
+  "variant": "P-en",
+  "split": "val",
+  "shots": 0,
+  "max_text_tokens": 65,
+  "scoring_rule": "first_token",
+  "label_first_tokens_distinct": true,
+  "rules_agree": 1.0,
+  "invalid_predictions": 0,
+  "val": {
+    "macro_f1": 39.46,
+    "micro_f1": 42.82,
+    "accuracy": 42.82,
+    "per_class": {
+      "neutral": {
+        "precision": 24.01,
+        "recall": 42.94,
+        "f1": 30.8,
+        "support": 354
+      },
+      "positive": {
+        "precision": 75.89,
+        "recall": 17.17,
+        "f1": 28.01,
+        "support": 623
+      },
+      "negative": {
+        "precision": 51.95,
+        "recall": 69.83,
+        "f1": 59.58,
+        "support": 590
+      }
+    },
+    "confusion_matrix": {
+      "rows": "gold",
+      "columns": "predicted",
+      "labels": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "values": [
+        [
+          152,
+          15,
+          187
+        ],
+        [
+          322,
+          107,
+          194
+        ],
+        [
+          159,
+          19,
+          412
+        ]
+      ]
+    }
+  },
+  "predicted_counts": {
+    "neutral": 633,
+    "positive": 141,
+    "negative": 793
+  },
+  "timing": {
+    "seconds": 99.6,
+    "examples_per_s": 15.73,
+    "peak_vram_gb": 1.116
+  },
+  "generation": {
+    "n_examples": 256,
+    "invalid_rate": 0.5898,
+    "macro_f1_on_valid_answers": 43.52,
+    "example_answers": [
+      "[redacted: the model echoed the comment]",
+      "negative",
+      "positive"
+    ],
+    "example_answers_note": "One sample quoted the input comment back. It was redacted by hand on 2026-09-27 because SentNoB is CC BY-ND and no dataset text may be committed. Only this illustrative field changed; every measured number in this file is untouched. scripts/m3_e2_pilot.py now redacts such samples itself."
+  }
+}
