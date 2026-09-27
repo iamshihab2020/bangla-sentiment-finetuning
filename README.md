@@ -34,6 +34,24 @@ costs **4.26** macro-F1 points for BanglaBERT (72.39 to 68.13) and **5.84** for 
 Published numbers on this dataset, including the 72.89 reproduced above, are inflated by that much.
 All learning-curve numbers in this repository use the cleaned split.
 
+**Where that effect comes from.** 438 of the 1,586 test rows (27.6%) have a near-duplicate in the
+original training split. Scoring the same saved predictions on each half separately shows the whole
+effect sits on those rows. BanglaBERT trained on the original split scores **86.42** macro-F1 on the
+contaminated half and **67.37** on the rest; trained on the cleaned split it scores 68.25 and 67.98.
+The effect is **18.78** points larger on the contaminated half (95% CI 13.98 to 23.67, seed-averaged
+paired bootstrap over 5,000 resamples), and on the clean half alone it is -0.61 and not distinguishable
+from zero. Simply copying the label of the matching training row scores 89.73% accuracy on the
+contaminated half.
+
+**The control.** To rule out the training set simply being 7% smaller, BanglaBERT was retrained on
+the original split minus 902 **randomly chosen** rows, matched per class, so it has exactly the size
+and class balance of the cleaned split. It scores **71.45 +- 0.81**, against 72.39 with the leaked
+rows kept and 68.13 with them removed. So of the 4.26-point drop, **0.94** is the smaller training
+set (95% CI -0.07 to 1.95, not distinguishable from zero) and **3.32** is the leaked rows themselves
+(95% CI 1.63 to 4.99). The control keeps its advantage only on the contaminated half (16.52 points,
+against -1.32 on the clean half). Memorization explains the drop; training-set size does not.
+From `results/a2_contamination_slices.json` and `results/e1_control.json`.
+
 ## Hardware
 
 Everything is designed to run on one consumer laptop, using only free tools.

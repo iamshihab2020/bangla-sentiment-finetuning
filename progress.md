@@ -11,7 +11,7 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 | M0 | Environment and budget | W1 (Sep 21 to Sep 27) | Done (Sep 19) |
 | M1 | Data | W2 (Sep 28 to Oct 4) | Done (Sep 19) |
 | M2 | Baselines E0 and E1 | W3 (Oct 5 to Oct 11) | Done (Sep 25). Both gates passed |
-| M3 | Pilot and E2 | W4 (Oct 12 to Oct 18) | Not started |
+| M3 | Pilot and E2 | W4 (Oct 12 to Oct 18) | Experiments done (Sep 26). Gate passed. Waiting on the main LLM decision |
 | M4 | RQ1 learning curves | W5 to W6 (Oct 19 to Nov 1) | Not started |
 | M5 | Ablations | W7 (Nov 2 to Nov 8) | Not started |
 | M6 | Secondary experiments | W8 to W9 (Nov 9 to Nov 22) | Not started |
@@ -28,6 +28,150 @@ Timeline: 2026-09-21 to 2026-12-18 (13 weeks, about 30 hours per week).
 #### Next
 #### Waiting on
 -->
+
+### 2026-09-26 (M3, the QLoRA pilot)
+
+#### Done
+
+- **QLoRA pilot complete.** All three candidates trained on the same 1,000 rows, same settings,
+  scored on the full validation split. Run by Shihab, about 1 hour of GPU in total.
+- **A bug of mine in the summary step,** found and fixed: the pilot script merged the trainer's
+  result dict after the identity fields, so `model` was overwritten with the repo id and the
+  tokenizer lookup raised a KeyError. No GPU time was lost, because every run had already been
+  saved and the rerun skipped them. The smoke test had missed it: `--limit` returns before the
+  summary code, so that path was never exercised.
+
+#### Findings
+
+| model | QLoRA 1k | few-shot | zero-shot | tokens/word | minutes | peak VRAM | projected curve |
+|---|---|---|---|---|---|---|---|
+| gemma-3-1b | **61.74** | 53.75 | 44.70 | 1.43 | 11.9 | 3.00 GB | 13.9 h (estimate) |
+| llama-3.2-1b | 60.15 | 33.12 | 14.84 | 6.24 | 16.9 | 3.20 GB | 22.0 h (estimate) |
+| qwen3.5-2b | 58.36 | 53.13 | 47.43 | 3.38 | 32.3 | 4.33 GB | 38.6 h (estimate) |
+
+- **Gemma wins on every criterion at once:** highest validation macro-F1, fewest tokens per word,
+  lowest VRAM, and by far the cheapest projected learning curve. No candidate is within 1 point, so
+  the tie-break never applies, and the cost rule does not trigger (13.9 hours, under the 20-hour
+  threshold).
+- **Fine-tuning on 1,000 rows beats the best prompting by 8 points** for Gemma (61.74 against 53.75)
+  and by 27 for Llama (60.15 against 33.12), but is still below BanglaBERT on the same 1,000 rows
+  (64.03 validation). The encoder keeps its lead at this size.
+- **Prompting rank does not predict fine-tuning rank.** Qwen was the best zero-shot model (47.43) and
+  ends up last after training (58.36); Llama was hopeless zero-shot (14.84) and ends up second.
+- **Two of three were still improving when training stopped at 3 epochs:** Gemma 52.6, 61.8, 65.3 and
+  Qwen 56.3, 57.7, 60.0, while Llama had flattened (46.0, 58.9, 59.5). The epoch cap is a live
+  question for M4, and it matters most for Gemma, the likely winner.
+- **Cost is not proportional to size.** Qwen (2B) costs 2.7 times Gemma's training time for 3.4 fewer
+  points, partly because two of its layer types fall back to unoptimised kernels on Windows
+  (`causal_conv1d`, `flash-linear-attention` are not installed). That is a real laptop deployment
+  cost, and it belongs in RQ3.
+
+#### Next
+
+- Shihab picks the main LLM and it goes in the decision log. The rule points to Gemma unambiguously.
+- Decide the epoch cap for E3 before M4 starts.
+- Then M4, the headline learning curve.
+
+#### Waiting on
+
+- The main LLM decision, and the epoch-cap decision.
+- Go-ahead to commit everything from today.
+
+### 2026-09-26 (A2, contaminated-slice analysis)
+
+#### Done
+
+- **A2, the contaminated-slice analysis, is done** (`src/bangla_sentiment/contamination.py`,
+  `scripts/m2_a2_contamination_slices.py`). The test split is cut in two with the M1 near-duplicate
+  key: 438 rows (27.6%) that have a near-duplicate in the original training split, and 1,148 that do
+  not. Every saved E0 and E1 prediction file is re-scored on each half. No retraining, no GPU time.
+- **Statistics code, reusable in M4:** a seed-averaged paired bootstrap of the macro-F1 difference
+  (`evaluate.bootstrap_differences`), with a fast bincount macro-F1 checked against sklearn in a test.
+- **The A2 control is done** (`m2_e1_banglabert.py --stage control`, run by Shihab, 17 minutes of
+  GPU). BanglaBERT retrained on the original split minus 902 **randomly chosen** rows, matched per
+  class, so it has exactly the size and class balance of the cleaned split. The A2 script picks it
+  up as a third variant automatically.
+- **The QLoRA trainer is written** (`src/bangla_sentiment/train_qlora.py`, `configs/e3.yaml`,
+  `scripts/m3_e3_pilot.py`), with the PRD out-of-memory rule implemented and a smoke test passed on
+  the laptop: Gemma trains at 4.86 examples/s at batch 4, peak 2.96 GB, adapters 50 MB.
+- **Tokenizer fertility re-checked and the open concern closed** (`tokenizer_stats.py` extended,
+  `results/m1_tokenizer_stats.json` regenerated). Three measurements are now reported per tokenizer
+  with the definition attached, so our numbers can be compared with published ones.
+- 12 new tests, 43 passing.
+
+#### Findings
+
+- **The leakage effect is memorization, and it is not spread evenly.** Trained on the original split,
+  BanglaBERT scores 86.42 macro-F1 on the contaminated half against 67.37 on the clean half. Trained
+  on the cleaned split it scores 68.25 and 67.98, that is, the same on both. The gap between the
+  halves is **18.78** points (95% CI 13.98 to 23.67, 5,000 resamples, p < 0.001) for BanglaBERT and
+  **25.45** (95% CI 19.94 to 31.11) for TF-IDF.
+- **On the clean half the leaky model is not better at all:** -0.61 for BanglaBERT (CI -2.16 to 0.92,
+  p 0.44) and -0.98 for TF-IDF (CI -2.33 to 0.29, p 0.13). Both intervals contain zero.
+- **The contaminated half is not intrinsically easier.** The cleaned model scores 68.25 on it against
+  67.98 on the rest, a 0.27-point difference. Only a model that saw the duplicates does well there.
+- **Memorization ceiling:** copying the label of the matching training row scores **89.73%** accuracy
+  and 86.97 macro-F1 on the contaminated half.
+- The majority-class baseline shows exactly 0.00 difference on every slice, which is the null check
+  that the slicing code itself introduces no bias.
+- **The control settles the confound.** Removing 902 **random** rows costs only **0.94** points
+  (71.45 +- 0.81 against 72.39), and that difference is not distinguishable from zero (95% CI -0.07
+  to 1.95, p 0.066). Removing the 902 **leaked** rows costs **3.32** points on top of that (95% CI
+  1.63 to 4.99, p 0.0004). The size explanation is dead.
+- The control behaves like a leaky model exactly where it should: it keeps 16.52 points of advantage
+  on the contaminated half and **-1.32** on the clean half (CI -2.84 to 0.22). A random draw still
+  leaves about 94% of the contaminated test rows memorizable (410, 404 and 411 of 438).
+- **Our tokenizer fertility numbers are not wrong, they are a different measurement.** Counting each
+  distinct Bangla word once gives Llama **8.91** tokens per word, which brackets the published 7.84
+  to 7.99; our corpus-level 6.24 is lower because SentNoB is short, repetitive social media text and
+  8.6% of its words are not Bangla at all. The normalizer is not a factor (6.72 against 6.57 raw).
+  The published Qwen comparison was invalid: 7.10 is Qwen3-8B, and Qwen3.5-2B has a different
+  248,077-token vocabulary.
+
+#### Next
+
+- Shihab runs the 1k QLoRA pilot (about 1.5 hours, estimate), then picks the main LLM.
+- That closes M3. M4 is the headline E3 learning curve.
+
+#### Waiting on
+
+- Shihab to run the QLoRA pilot.
+- Go-ahead to commit: the E2 results, all of A2, the control, and the E3 code.
+
+### 2026-09-26 (M3, prompt pilot and E2)
+
+#### Done
+
+- **Prompt and scoring code:** `prompts.py` (two prompt languages, class-balanced few-shot builder), `scoring.py` (4-bit loading, label-probability scoring with both rules from one forward pass, a generation path for the invalid-output rate), `configs/e2.yaml`, `scripts/m3_e2_pilot.py`. 12 new tests, 31 passing.
+- **All four LLMs downloaded** (9.1 GB) and verified to load and score in 4-bit on the laptop.
+- **Prompt pilot done.** English instruction with English labels (P-en) beats Bangla (P-bn) by a wide margin, 35.66 against 21.56 mean validation macro-F1 over the three candidates. P-en is frozen for every later generative run.
+- **E2 done** on the full validation split: zero-shot for both variants and few-shot (6 examples, 3 draws) for the frozen prompt, for all four models.
+- **New working agreement:** Shihab runs anything over about 10 minutes of GPU time in his own terminal.
+
+#### Findings
+
+- **M3 gate passed.** Label-probability scoring gives zero invalid predictions by construction. Free generation is the opposite: with the Bangla prompt the invalid-output rate is 100% for Llama and TigerLLM and 99% for Qwen, and even with the English prompt TigerLLM is 59%. Grading generated text would have measured formatting, not sentiment.
+- **Zero-shot validation macro-F1 (P-en):** Qwen3.5-2B 47.43, Gemma-3-1B 44.70, TigerLLM-1B 39.46, Llama-3.2-1B 14.84.
+- **Few-shot, 6 examples, mean ± sd over 3 draws:** Gemma 53.75 ± 2.78, TigerLLM 53.48 ± 2.98, Qwen 53.13 ± 1.55, Llama 33.12 ± 4.53. The top three are within noise of each other, and 6 examples are worth 6 to 14 points over zero-shot.
+- **No untrained LLM is competitive yet.** The best few-shot number (53.75) is below BanglaBERT trained on 250 examples (60.42) and below TF-IDF trained on the full split (62.03).
+- **Early evidence against H2 (RQ2).** TigerLLM, the Bangla-adapted model, does **not** beat its Gemma base zero-shot (39.46 against 44.70) and only ties it few-shot (53.48 against 53.75). E5 tests this properly after fine-tuning.
+- **Speed differs by 4.4x on the same task:** Gemma 20.5 comments/s, TigerLLM 15.7, Llama 7.8, Qwen 4.7. Qwen also falls back to unoptimized kernels for its linear-attention layers on this setup.
+- **Scoring rule per model matters.** With the Bangla prompt, Llama's and Qwen's three label words share a first token, so the full-label rule is required there. With the English prompt every model can use the fast first-token rule.
+- **A memory bug of ours, found and fixed:** scoring normalized logits over the whole vocabulary at every position, about 1 GB per batch at a 262k vocabulary, which made Qwen run out of memory. Sequences are now left-padded and only the last few positions are kept. Gemma's peak fell from 2.63 GB to 1.05 GB.
+
+#### Next
+
+- Write the QLoRA training code, then the 1k pilot per candidate (Gemma, Llama, Qwen), which Shihab runs.
+- Shihab then picks the main LLM using the rule in PRD section 6, including the cost criterion.
+
+#### Waiting on
+
+- Go-ahead to commit the E2 results.
+
+#### Also decided (2026-09-26)
+
+- A literature check placed each finding against prior work (`notes/novelty_and_strategy.md`, private). Three findings are claimed: the contamination audit, the TigerLLM weights mismatch, and the cost-annotated curves. Tokenizer fertility, prompt language, the scikit-learn tokenizer bug and label scoring become methods justifications with citations.
+- Seven additions approved, listed in order in `notes/HANDOFF.md`. The next two are cheap and come before M4: a contaminated-slice analysis of the saved predictions, and a random-removal control run.
 
 ### 2026-09-25 (M2 done, E1 BanglaBERT)
 
