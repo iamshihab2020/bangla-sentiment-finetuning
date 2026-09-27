@@ -1,0 +1,65 @@
+# E3: QLoRA fine-tuning of a generative LLM (PRD section 8). The prompt variant and the scoring
+# rule come from M3 and are frozen. The learning rate is chosen on validation at 1k rows, seed 0,
+# in M4; the M3 candidate pilot uses pilot_learning_rate so every candidate is compared at one
+# fixed setting.
+experiment: E3
+dataset: sentnob
+
+# Recorded for the result files. The values themselves live in scoring.load_4bit, which is the one
+# place quantization is configured, so E2 and E3 always load the base model the same way.
+quantization:
+  bits: 4
+  quant_type: nf4
+  double_quant: true
+  compute_dtype: bfloat16
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: all-linear
+
+effective_batch_size: 16    # reached with gradient accumulation, whatever per-device batch fits
+max_epochs: 3
+min_steps: 150              # small subsets train longer, the same rule as E1
+learning_rates: [1.0e-4, 2.0e-4, 4.0e-4]   # the M4 grid, at 1k rows and seed 0
+pilot_learning_rate: 2.0e-4                # middle of the grid, for the M3 candidate pilot
+pilot_train_rows: 1000
+pilot_eval_rows: 500        # stratified sample of validation, used only to choose the best epoch
+warmup_ratio: 0.03
+weight_decay: 0.0
+max_grad_norm: 1.0
+gradient_checkpointing: true
+optimizer: paged_adamw_8bit
+scheduler: cosine
+
+models:
+  # max_text_tokens is the M1 p99 of comment length under each tokenizer, so no model has its
+  # comments truncated more than another. train_batch_size starts near 512 tokens per batch, which
+  # is what M0 measured as the sweet spot on this 6 GB card (batch 8 at length 128 was slower than
+  # batch 4 and used 5.0 GB). If it does not fit, the runner halves it and keeps the effective
+  # batch at 16.
+  gemma-3-1b:
+    repo_id: google/gemma-3-1b-it
+    max_text_tokens: 65
+    train_batch_size: 4
+    eval_batch_size: 16
+    candidate: true
+  llama-3.2-1b:
+    repo_id: meta-llama/Llama-3.2-1B-Instruct
+    max_text_tokens: 289
+    train_batch_size: 2
+    eval_batch_size: 8
+    candidate: true
+  qwen3.5-2b:
+    repo_id: Qwen/Qwen3.5-2B
+    max_text_tokens: 158
+    train_batch_size: 2
+    eval_batch_size: 8
+    candidate: true
+  tigerllm-1b:
+    repo_id: md-nishat-008/TigerLLM-1B-it
+    max_text_tokens: 65
+    train_batch_size: 4
+    eval_batch_size: 16
+    candidate: false   # reserved for RQ2 (E5), never eligible as the main LLM
